@@ -1,4 +1,5 @@
 import { Component } from '@angular/core';
+import { Router } from '@angular/router';
 import { Product } from '../app.model';
 
 @Component({
@@ -9,7 +10,9 @@ import { Product } from '../app.model';
 export class ProductListComponent {
   products: Product[] = []
 
-  constructor() {
+  constructor(
+    private router: Router
+  ) {
     this.products = [
       new Product(0, 'product 1', 'category 1', 'https://static01.nyt.com/images/2016/09/28/us/17xp-pepethefrog_web1/28xp-pepefrog-articleLarge.jpg', 100, 'description 1'),
       new Product(0, 'product 1', 'category 1', 'https://static01.nyt.com/images/2016/09/28/us/17xp-pepethefrog_web1/28xp-pepefrog-articleLarge.jpg', 100, 'description 1')
@@ -17,6 +20,7 @@ export class ProductListComponent {
   }
 
   showProductDetails(id: number): void {
+    this.router.navigate(['products', id])
   }
 
   showShoppingCart(): void {

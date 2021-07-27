@@ -12,12 +12,13 @@ export class Product {
         category: string = '',
         image: string = '',
         price: number = 0,
-        description: string = '') {
-            this.id = id
-            this.name = name
-            this.category = category
-            this.image = image
-            this.price = price
-            this.description = description
+        description: string = ''
+    ) {
+        this.id = id
+        this.name = name
+        this.category = category
+        this.image = image
+        this.price = price
+        this.description = description
     }
 }

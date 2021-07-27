@@ -1,4 +1,5 @@
 import { Component } from '@angular/core';
+import { ActivatedRoute } from '@angular/router';
 import { Product } from '../app.model';
 
 @Component({
@@ -10,7 +11,11 @@ export class ProductDetailsComponent {
   product: Product = new Product()
   isDeleteModalShown: Boolean = false
 
-  constructor() {
+  constructor(
+    private activatedRoute: ActivatedRoute
+  ) {
+    activatedRoute.params.subscribe(params =>
+      console.log(params['id']))
     this.product = new Product(0, 'product 1', 'category 1', 'https://static01.nyt.com/images/2016/09/28/us/17xp-pepethefrog_web1/28xp-pepefrog-articleLarge.jpg', 100, 'description 1')
   }
 
