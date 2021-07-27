@@ -1,6 +1,7 @@
 import { Component } from '@angular/core';
 import { Router } from '@angular/router';
 import { Product } from '../app.model';
+import { ProductService } from '../product.service';
 
 @Component({
   selector: 'app-product-list',
@@ -11,12 +12,11 @@ export class ProductListComponent {
   products: Product[] = []
 
   constructor(
+    private productService: ProductService,
     private router: Router
   ) {
-    this.products = [
-      new Product(0, 'product 1', 'category 1', 'https://static01.nyt.com/images/2016/09/28/us/17xp-pepethefrog_web1/28xp-pepefrog-articleLarge.jpg', 100, 'description 1'),
-      new Product(0, 'product 1', 'category 1', 'https://static01.nyt.com/images/2016/09/28/us/17xp-pepethefrog_web1/28xp-pepefrog-articleLarge.jpg', 100, 'description 1')
-    ]
+    productService.getProducts().subscribe(products =>
+      this.products = products)
   }
 
   showProductDetails(id: number): void {

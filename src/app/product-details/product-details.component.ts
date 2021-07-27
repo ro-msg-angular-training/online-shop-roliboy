@@ -1,6 +1,7 @@
 import { Component } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { Product } from '../app.model';
+import { ProductService } from '../product.service';
 
 @Component({
   selector: 'app-product-details',
@@ -12,11 +13,12 @@ export class ProductDetailsComponent {
   isDeleteModalShown: Boolean = false
 
   constructor(
+    private productService: ProductService,
     private activatedRoute: ActivatedRoute
   ) {
     activatedRoute.params.subscribe(params =>
-      console.log(params['id']))
-    this.product = new Product(0, 'product 1', 'category 1', 'https://static01.nyt.com/images/2016/09/28/us/17xp-pepethefrog_web1/28xp-pepefrog-articleLarge.jpg', 100, 'description 1')
+      productService.retrieveProduct(params['id']).subscribe(product =>
+        this.product = product))
   }
 
   showDeleteModal(): void {
