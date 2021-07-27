@@ -1,0 +1,89 @@
+<div class="hero is-fullheight">
+    <div class="hero-body">
+        <div class="container">
+            <div class="level">
+                <div class="level-left">
+                    <div class="level-item">
+                        <p class="title is-2">
+                            Product: {{product.name}}
+                        </p>
+                    </div>
+                </div>
+
+                <div class="level-right">
+                    <div class="level-item">
+                        <button class="button action-button is-large is-info" (click)="addToCart()">
+                            ADD
+                        </button>
+                    </div>
+                    <div class="level-item">
+                        <button class="button action-button is-large is-info" (click)="editProduct()">
+                            EDIT
+                        </button>
+                    </div>
+                    <div class="level-item">
+                        <button class="button action-button is-large is-danger" (click)="showDeleteModal()">
+                            DELETE
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <div class="columns">
+                <div class="column is-10">
+                    <table class="table table-collapse-first table-no-border is-borderless is-fullwidth">
+                        <tbody>
+                            <tr>
+                                <td class="p-4 has-text-right">name:</td>
+                                <td class="p-4">{{product.name}}</td>
+                            </tr>
+                            <tr>
+                                <td class="p-4 has-text-right">category:</td>
+                                <td class="p-4">{{product.category}}</td>
+                            </tr>
+                            <tr>
+                                <td class="p-4 has-text-right">price:</td>
+                                <td class="p-4">{{product.price}} RON</td>
+                            </tr>
+                            <tr>
+                                <td class="p-4 has-text-right">description:</td>
+                                <td class="p-4">{{product.description}}</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+                <div class="column is-2">
+                    <img [src]="product.image">
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal" [ngClass]="{'is-active': isDeleteModalShown}">
+    <div class="modal-background"></div>
+
+    <div class="modal-card">
+        <header class="modal-card-head">
+            <p class="modal-card-title">Confirm</p>
+            <button class="delete" aria-label="close" (click)="hideDeleteModal()"></button>
+        </header>
+
+        <section class="modal-card-body">
+            <div class="content">
+                <p>Are you sure you want to delete {{product.name}}?</p>
+            </div>
+        </section>
+
+        <footer class="modal-card-foot pr-0">
+            <div class="columns modal-button-group">
+                <div class="column is-6">
+                    <button class="button is-info is-fullwidth" (click)="hideDeleteModal()">Cancel</button>
+                </div>
+                <div class="column is-6">
+                    <button class="button is-danger is-fullwidth" (click)="deleteProduct()">Ok</button>
+                </div>
+            </div>
+        </footer>
+    </div>
+</div>

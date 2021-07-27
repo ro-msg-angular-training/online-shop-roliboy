@@ -1,1 +1,21 @@
 /* You can add global styles to this file, and also import other style files */
+.action-button {
+    min-width: 6em
+}
+
+.modal-button-group {
+    width: 100%
+}
+
+.table-no-border td {
+    border-bottom: 0px
+}
+
+.table-collapse-first td:first-child {
+    width: 0
+}
+
+.table-collapse-last td:last-child {
+    width: 0
+}
+
