@@ -11,12 +11,12 @@
                 </div>
 
                 <div class="level-right">
-                    <div class="level-item">
+                    <div class="level-item" *ngIf="isAdmin()">
                         <button class="button action-button is-large is-info" (click)="showAddProduct()">
                             ADD
                         </button>
                     </div>
-                    <div class="level-item">
+                    <div class="level-item" *ngIf="isCustomer()">
                         <button class="button action-button is-large is-info" (click)="showShoppingCart()">
                             <span class="icon">
                                 <i class="fas fa-shopping-cart"></i>

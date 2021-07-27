@@ -1,6 +1,7 @@
 import { Component } from '@angular/core';
 import { Router } from '@angular/router';
 import { Product } from '../app.model';
+import { AuthService } from '../auth.service';
 import { ProductService } from '../product.service';
 
 @Component({
@@ -12,6 +13,7 @@ export class ProductListComponent {
   products: Product[] = []
 
   constructor(
+    private authService: AuthService,
     private productService: ProductService,
     private router: Router
   ) {
@@ -29,5 +31,13 @@ export class ProductListComponent {
 
   showAddProduct(): void {
     this.router.navigate(['products', 'add'])
+  }
+
+  isAdmin(): boolean {
+    return this.authService.isAdmin()
+  }
+
+  isCustomer(): boolean {
+    return this.authService.isCustomer()
   }
 }

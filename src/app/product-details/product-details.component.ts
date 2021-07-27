@@ -1,6 +1,7 @@
 import { Component } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Product } from '../app.model';
+import { AuthService } from '../auth.service';
 import { OrderService } from '../order.service';
 import { ProductService } from '../product.service';
 
@@ -14,6 +15,7 @@ export class ProductDetailsComponent {
   isDeleteModalShown: Boolean = false
 
   constructor(
+    private authService: AuthService,
     private productService: ProductService,
     private orderService: OrderService,
     private activatedRoute: ActivatedRoute,
@@ -43,5 +45,13 @@ export class ProductDetailsComponent {
 
   addToCart(): void {
     this.orderService.addProduct(this.product)
+  }
+
+  isAdmin(): boolean {
+    return this.authService.isAdmin()
+  }
+
+  isCustomer(): boolean {
+    return this.authService.isCustomer()
   }
 }

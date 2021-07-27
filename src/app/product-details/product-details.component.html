@@ -11,7 +11,7 @@
                 </div>
 
                 <div class="level-right">
-                    <div class="level-item">
+                    <div class="level-item" *ngIf="isCustomer()">
                         <button class="button action-button is-large is-info" (click)="addToCart()">
                             <span class="icon">
                                 <i class="fas fa-plus"></i>
@@ -19,12 +19,12 @@
                             </span>
                         </button>
                     </div>
-                    <div class="level-item">
+                    <div class="level-item" *ngIf="isAdmin()">
                         <button class="button action-button is-large is-info" (click)="editProduct()">
                             EDIT
                         </button>
                     </div>
-                    <div class="level-item">
+                    <div class="level-item" *ngIf="isAdmin()">
                         <button class="button action-button is-large is-danger" (click)="showDeleteModal()">
                             DELETE
                         </button>
