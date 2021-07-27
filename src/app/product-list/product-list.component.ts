@@ -24,5 +24,6 @@ export class ProductListComponent {
   }
 
   showShoppingCart(): void {
+    this.router.navigate(['cart'])
   }
 }

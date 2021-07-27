@@ -1,6 +1,7 @@
 import { Component } from '@angular/core';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { Product } from '../app.model';
+import { OrderService } from '../order.service';
 import { ProductService } from '../product.service';
 
 @Component({
@@ -14,7 +15,9 @@ export class ProductDetailsComponent {
 
   constructor(
     private productService: ProductService,
-    private activatedRoute: ActivatedRoute
+    private orderService: OrderService,
+    private activatedRoute: ActivatedRoute,
+    private router: Router
   ) {
     activatedRoute.params.subscribe(params =>
       productService.retrieveProduct(params['id']).subscribe(product =>
@@ -33,8 +36,11 @@ export class ProductDetailsComponent {
   }
 
   deleteProduct(): void {
+    this.productService.deleteProduct(this.product.id).subscribe(result =>
+      this.router.navigate(['products']))
   }
 
   addToCart(): void {
+    this.orderService.addProduct(this.product)
   }
 }
