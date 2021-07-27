@@ -1,4 +1,5 @@
 import { Component } from '@angular/core';
+import { Router } from '@angular/router';
 import { CartItem } from '../app.model';
 import { OrderService } from '../order.service';
 
@@ -11,7 +12,8 @@ export class ShoppingCartComponent {
   cartItems: CartItem[] = []
   
   constructor(
-    private orderService: OrderService
+    private orderService: OrderService,
+    private router: Router
   ) {
     this.cartItems = orderService.getCartItems()
   }
@@ -22,7 +24,9 @@ export class ShoppingCartComponent {
   }
 
   checkout(): void {
-    this.orderService.createOrder("doej").subscribe(result =>
-      console.log(result))
+    this.orderService.createOrder("doej").subscribe(result => {
+      alert(result)
+      this.router.navigate(['products'])
+    })
   }
 }

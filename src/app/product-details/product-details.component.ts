@@ -33,6 +33,7 @@ export class ProductDetailsComponent {
   }
 
   editProduct(): void {
+    this.router.navigate(['products', this.product.id, 'edit'])
   }
 
   deleteProduct(): void {

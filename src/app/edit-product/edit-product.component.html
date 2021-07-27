@@ -1,0 +1,66 @@
+<section class="hero is-fullheight">
+    <div class="hero-body">
+        <div class="container">
+            <div class="level">
+                <div class="level-left">
+                    <div class="level-item">
+                        <p class="title is-2">
+                            Edit: {{productName}}
+                        </p>
+                    </div>
+                </div>
+            </div>
+
+            <form [formGroup]="productForm" (ngSubmit)="onSubmit()">
+                <table class="table table-no-border table-collapse-first is-borderless is-fullwidth">
+                    <tbody>
+                        <tr>
+                            <td class="p-4 has-text-right">Name</td>
+                            <td class="p-2">
+                                <input type="text" placeholder="Product name" class="input" formControlName="name">
+                            </td>
+                        </tr>
+                        <tr>
+                            <td class="p-4 has-text-right">Category</td>
+                            <td class="p-2">
+                                <input type="text" placeholder="Product category" class="input" formControlName="category">
+                            </td>
+                        </tr>
+                        <tr>
+                            <td class="p-4 has-text-right">Image</td>
+                            <td class="p-2">
+                                <input type="text" placeholder="Product image url" class="input" formControlName="image">
+                            </td>
+                        </tr>
+                        <tr>
+                            <td class="p-4 has-text-right">Price</td>
+                            <td class="p-2">
+                                <input type="number" placeholder="Product price" class="input" formControlName="price">
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+                <textarea class="textarea" placeholder="Product description" formControlName="description"></textarea>
+
+                <div class="level pt-5">
+                    <div class="level-left">
+                    </div>
+
+                    <div class="level-right">
+                        <div class="level-item">
+                            <button type="button" class="button action-button is-large" (click)="onCancel()">
+                                CANCEL
+                            </button>
+                        </div>
+                        <div class="level-item">
+                            <button type="submit" class="button action-button is-large is-info" [disabled]="!this.productForm.valid">
+                                SAVE
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </form>
+
+        </div>
+    </div>
+</section>

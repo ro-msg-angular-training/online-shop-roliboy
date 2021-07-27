@@ -41,6 +41,7 @@ export class OrderService {
   createOrder(username: string): Observable<any> {
     let customer = username
     let products = this.cartItems.map(item => new OrderItem(item.productId, item.quantity))
+    this.cartItems = []
     return this.httpClient.post(`${this.apiRoot}/orders`, {customer, products}, {responseType: 'text'})
   }
 }
