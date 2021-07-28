@@ -1,36 +1,36 @@
 <section class="hero is-fullheight">
     <div class="hero-body">
-      <div class="container">
-        <div class="columns is-centered">
-          <div class="column is-5-tablet is-4-desktop is-4-widescreen">
-            <form [formGroup]="loginForm" (ngSubmit)="onSubmit()" class="box">
-              <h1 class="subtitle form-title">Sign In</h1>
-              <div class="field">
-                <label for="" class="label">Username</label>
-                <div class="control has-icons-left">
-                  <input type="text" placeholder="Chiar El" class="input" formControlName="username">
-                  <span class="icon is-small is-left">
-                    <i class="fa fa-user"></i>
-                  </span>
+        <div class="container">
+            <div class="columns is-centered">
+                <div class="column is-5-tablet is-4-desktop is-4-widescreen">
+                    <form [formGroup]="loginForm" (ngSubmit)="onSubmit()" class="box">
+                        <h1 class="subtitle form-title">Sign In</h1>
+                        <div class="field">
+                            <label for="" class="label">Username</label>
+                            <div class="control has-icons-left">
+                                <input type="text" placeholder="Chiar El" class="input" formControlName="username">
+                                <span class="icon is-small is-left">
+                                    <i class="fa fa-user"></i>
+                                </span>
+                            </div>
+                        </div>
+                        <div class="field">
+                            <label for="" class="label">Password</label>
+                            <div class="control has-icons-left">
+                                <input type="password" placeholder="*******" class="input" formControlName="password">
+                                <span class="icon is-small is-left">
+                                    <i class="fa fa-lock"></i>
+                                </span>
+                            </div>
+                        </div>
+                        <div class="field">
+                            <button type="submit" class="button is-info is-fullwidth">
+                                Login
+                            </button>
+                        </div>
+                    </form>
                 </div>
-              </div>
-              <div class="field">
-                <label for="" class="label">Password</label>
-                <div class="control has-icons-left">
-                  <input type="password" placeholder="*******" class="input" formControlName="password">
-                  <span class="icon is-small is-left">
-                    <i class="fa fa-lock"></i>
-                  </span>
-                </div>
-              </div>
-              <div class="field">
-                <button type="submit" class="button is-info is-fullwidth">
-                  Login
-                </button>
-              </div>
-            </form>
-          </div>
+            </div>
         </div>
-      </div>
     </div>
-  </section>
+</section>

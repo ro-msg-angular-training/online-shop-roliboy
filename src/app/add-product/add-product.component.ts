@@ -18,7 +18,7 @@ export class AddProductComponent {
     price: ['', Validators.required],
     description: ['', Validators.required]
   })
-  
+
   constructor(
     private productService: ProductService,
     private location: Location,

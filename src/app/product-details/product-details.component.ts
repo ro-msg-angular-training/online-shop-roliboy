@@ -29,7 +29,7 @@ export class ProductDetailsComponent {
   showDeleteModal(): void {
     this.isDeleteModalShown = true
   }
-  
+
   hideDeleteModal(): void {
     this.isDeleteModalShown = false
   }

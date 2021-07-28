@@ -13,31 +13,31 @@ const routes: Routes = [
     path: 'products',
     component: ProductListComponent,
     canActivate: [AuthGuard],
-    data: {role: 'user'}
+    data: { role: 'user' }
   },
   {
     path: 'products/add',
     component: AddProductComponent,
     canActivate: [AuthGuard],
-    data: {role: 'admin'}
+    data: { role: 'admin' }
   },
   {
     path: 'products/:id',
     component: ProductDetailsComponent,
     canActivate: [AuthGuard],
-    data: {role: 'user'}
+    data: { role: 'user' }
   },
   {
     path: 'products/:id/edit',
     component: EditProductComponent,
     canActivate: [AuthGuard],
-    data: {role: 'admin'}
+    data: { role: 'admin' }
   },
   {
     path: 'cart',
     component: ShoppingCartComponent,
     canActivate: [AuthGuard],
-    data: {role: 'customer'}
+    data: { role: 'customer' }
   },
   {
     path: 'login',

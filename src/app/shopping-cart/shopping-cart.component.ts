@@ -10,7 +10,7 @@ import { OrderService } from '../order.service';
 })
 export class ShoppingCartComponent {
   cartItems: CartItem[] = []
-  
+
   constructor(
     private orderService: OrderService,
     private router: Router
