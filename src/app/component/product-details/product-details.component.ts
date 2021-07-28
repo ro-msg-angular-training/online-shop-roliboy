@@ -1,9 +1,9 @@
 import { Component } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
-import { Product } from '../app.model';
-import { AuthService } from '../auth.service';
-import { OrderService } from '../order.service';
-import { ProductService } from '../product.service';
+import { Product } from '../../model/product.model';
+import { AuthService } from '../../service/auth.service';
+import { OrderService } from '../../service/order.service';
+import { ProductService } from '../../service/product.service';
 
 @Component({
   selector: 'app-product-details',

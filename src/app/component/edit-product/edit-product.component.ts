@@ -1,9 +1,9 @@
 import { Location } from '@angular/common';
 import { Component } from '@angular/core';
 import { FormBuilder, Validators } from '@angular/forms';
-import { ActivatedRoute, Router } from '@angular/router';
-import { Product } from '../app.model';
-import { ProductService } from '../product.service';
+import { ActivatedRoute } from '@angular/router';
+import { Product } from '../../model/product.model';
+import { ProductService } from '../../service/product.service';
 
 @Component({
   selector: 'app-edit-product',

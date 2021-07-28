@@ -1,8 +1,8 @@
 import { Location } from '@angular/common';
 import { Component } from '@angular/core';
 import { FormBuilder, Validators } from '@angular/forms';
-import { Product } from '../app.model';
-import { ProductService } from '../product.service';
+import { Product } from '../../model/product.model';
+import { ProductService } from '../../service/product.service';
 
 @Component({
   selector: 'app-add-product',

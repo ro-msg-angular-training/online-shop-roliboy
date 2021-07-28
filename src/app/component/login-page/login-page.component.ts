@@ -1,7 +1,7 @@
 import { Location } from '@angular/common';
 import { Component } from '@angular/core';
 import { FormBuilder } from '@angular/forms';
-import { AuthService } from '../auth.service';
+import { AuthService } from '../../service/auth.service';
 
 @Component({
   selector: 'app-login-page',
