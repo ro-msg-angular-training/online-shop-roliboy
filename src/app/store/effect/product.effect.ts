@@ -9,7 +9,7 @@ import {
   AddProductSuccess,
   DeleteProduct,
   DeleteProductSuccess,
-  EProductActions,
+  ProductActionTypes,
   GetProduct,
   GetProducts,
   GetProductsSuccess,
@@ -17,19 +17,19 @@ import {
   UpdateProduct,
   UpdateProductSuccess,
 } from '../action/product.action';
-import { IAppState } from '../state/app.state';
+import { AppState } from '../state/app.state';
 
 @Injectable()
 export class ProductEffects {
   constructor(
     private _actions$: Actions,
-    private _store: Store<IAppState>,
+    private _store: Store<AppState>,
     private _service: ProductService
   ) {}
 
   getProducts$ = createEffect(() => {
     return this._actions$.pipe(
-      ofType<GetProducts>(EProductActions.GetProducts),
+      ofType<GetProducts>(ProductActionTypes.GetProducts),
       switchMap(() => this._service.getProducts()),
       switchMap((products) => of(new GetProductsSuccess(products)))
     );
@@ -37,7 +37,7 @@ export class ProductEffects {
 
   getProduct$ = createEffect(() => {
     return this._actions$.pipe(
-      ofType<GetProduct>(EProductActions.GetProduct),
+      ofType<GetProduct>(ProductActionTypes.GetProduct),
       map((action) => action.payload),
       switchMap((id) => this._service.retrieveProduct(id)),
       switchMap((product) => of(new GetProductSuccess(product)))
@@ -46,7 +46,7 @@ export class ProductEffects {
 
   addProduct$ = createEffect(() => {
     return this._actions$.pipe(
-      ofType<AddProduct>(EProductActions.AddProduct),
+      ofType<AddProduct>(ProductActionTypes.AddProduct),
       map((action) => action.payload),
       switchMap((product) => this._service.createProduct(product)),
       switchMap((product) => of(new AddProductSuccess(product)))
@@ -55,7 +55,7 @@ export class ProductEffects {
 
   updateProduct$ = createEffect(() => {
     return this._actions$.pipe(
-      ofType<UpdateProduct>(EProductActions.UpdateProduct),
+      ofType<UpdateProduct>(ProductActionTypes.UpdateProduct),
       map((action) => action.payload),
       switchMap((product) =>
         this._service.updateProduct(product).pipe(map(() => product))
@@ -66,7 +66,7 @@ export class ProductEffects {
 
   deleteProduct$ = createEffect(() => {
     return this._actions$.pipe(
-      ofType<DeleteProduct>(EProductActions.DeleteProduct),
+      ofType<DeleteProduct>(ProductActionTypes.DeleteProduct),
       map((action) => action.payload),
       // the .pipe() after the service call transforms the returned null into the id
       // so it can be used in the next map

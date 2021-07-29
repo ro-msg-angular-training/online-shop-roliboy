@@ -7,10 +7,10 @@ import { Subscription } from 'rxjs';
 import {
   AuthLogin,
   AuthLoginSuccess,
-  EAuthActions,
+  AuthActionTypes,
 } from 'src/app/store/action/auth.action';
 import { selectAuthErrorMessage, selectHasAuthError } from 'src/app/store/reducer/auth.reducer';
-import { IAppState } from 'src/app/store/state/app.state';
+import { AppState } from 'src/app/store/state/app.state';
 
 @Component({
   selector: 'app-login-page',
@@ -32,7 +32,7 @@ export class LoginPageComponent implements OnInit {
   });
 
   constructor(
-    private store: Store<IAppState>,
+    private store: Store<AppState>,
     private location: Location,
     private fb: FormBuilder,
     private actionsSubject$: ActionsSubject
@@ -40,7 +40,7 @@ export class LoginPageComponent implements OnInit {
 
   ngOnInit(): void {
     this.userAuthenticatedSubscription$ = this.actionsSubject$
-      .pipe(ofType<AuthLoginSuccess>(EAuthActions.AuthLoginSuccess))
+      .pipe(ofType<AuthLoginSuccess>(AuthActionTypes.AuthLoginSuccess))
       .subscribe(() => {
         this.userAuthenticatedSubscription$.unsubscribe();
         this.location.back();

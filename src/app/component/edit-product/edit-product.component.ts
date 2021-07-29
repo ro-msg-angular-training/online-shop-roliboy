@@ -6,13 +6,13 @@ import { ofType } from '@ngrx/effects';
 import { ActionsSubject, select, Store } from '@ngrx/store';
 import { Subscription } from 'rxjs';
 import {
-  EProductActions,
+  ProductActionTypes,
   GetProduct,
   UpdateProduct,
   UpdateProductSuccess,
 } from 'src/app/store/action/product.action';
 import { selectSelectedProduct } from 'src/app/store/reducer/product.reducer';
-import { IAppState } from 'src/app/store/state/app.state';
+import { AppState } from 'src/app/store/state/app.state';
 
 @Component({
   selector: 'app-edit-product',
@@ -34,7 +34,7 @@ export class EditProductComponent implements OnInit, OnDestroy {
   });
 
   constructor(
-    private store: Store<IAppState>,
+    private store: Store<AppState>,
     private location: Location,
     private activatedRoute: ActivatedRoute,
     private fb: FormBuilder,
@@ -52,7 +52,7 @@ export class EditProductComponent implements OnInit, OnDestroy {
     });
 
     this.productUpdatedSubscription$ = this.actionsSubject$
-      .pipe(ofType<UpdateProductSuccess>(EProductActions.UpdateProductSuccess))
+      .pipe(ofType<UpdateProductSuccess>(ProductActionTypes.UpdateProductSuccess))
       .subscribe(() => {
         this.productUpdatedSubscription$.unsubscribe();
         this.location.back();

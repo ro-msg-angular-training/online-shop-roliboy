@@ -2,7 +2,7 @@ import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { environment } from 'src/environments/environment';
-import { ILoginCredentials, IUser } from '../model/user.model';
+import { LoginCredentials, User } from '../model/user.model';
 
 @Injectable({
   providedIn: 'root',
@@ -10,8 +10,8 @@ import { ILoginCredentials, IUser } from '../model/user.model';
 export class AuthService {
   constructor(private httpClient: HttpClient) {}
 
-  login(credentials: ILoginCredentials): Observable<IUser> {
-    return this.httpClient.post<IUser>(
+  login(credentials: LoginCredentials): Observable<User> {
+    return this.httpClient.post<User>(
       `${environment.apiUrl}/login`,
       credentials
     );

@@ -3,14 +3,14 @@ import { ofType } from '@ngrx/effects';
 import { ActionsSubject, select, Store } from '@ngrx/store';
 import { Subscription } from 'rxjs';
 import {
-  ECartActions,
+  CartActionTypes,
   PlaceOrder,
   PlaceOrderSuccess,
   RemoveCartItem,
 } from 'src/app/store/action/cart.action';
 import { selectUser } from 'src/app/store/reducer/auth.reducer';
 import { selectCartItemsWithProductData } from 'src/app/store/reducer/cart.reducer';
-import { IAppState } from 'src/app/store/state/app.state';
+import { AppState } from 'src/app/store/state/app.state';
 
 @Component({
   selector: 'app-shopping-cart',
@@ -25,7 +25,7 @@ export class ShoppingCartComponent implements OnInit, OnDestroy {
   username?: string;
 
   constructor(
-    private store: Store<IAppState>,
+    private store: Store<AppState>,
     private actionsSubject$: ActionsSubject
   ) {}
 
@@ -36,7 +36,7 @@ export class ShoppingCartComponent implements OnInit, OnDestroy {
       .subscribe((user) => (this.username = user?.username));
 
     this.orderRegisteredSubscription$ = this.actionsSubject$
-      .pipe(ofType<PlaceOrderSuccess>(ECartActions.PlaceOrderSuccess))
+      .pipe(ofType<PlaceOrderSuccess>(CartActionTypes.PlaceOrderSuccess))
       .subscribe(() => {
         // TODO: use html element instead alert to notify the user
         alert('order submitted');

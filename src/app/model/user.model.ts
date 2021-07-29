@@ -1,9 +1,9 @@
-export interface ILoginCredentials {
+export interface LoginCredentials {
   username: string;
   password: string;
 }
 
-export interface IUser {
+export interface User {
   username: string;
   fullName: string;
   roles: string[];

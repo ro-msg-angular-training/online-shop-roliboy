@@ -1,17 +1,17 @@
 import { createSelector } from '@ngrx/store';
-import { ICartItem } from 'src/app/model/cart-item.model';
-import { CartActions, ECartActions } from '../action/cart.action';
-import { IAppState } from '../state/app.state';
-import { ICartState, initialCartState } from '../state/cart.state';
+import { CartItem } from 'src/app/model/cart-item.model';
+import { CartActions, CartActionTypes } from '../action/cart.action';
+import { AppState } from '../state/app.state';
+import { CartState, initialCartState } from '../state/cart.state';
 
 export const cartReducer = (
   state = initialCartState,
   action: CartActions
-): ICartState => {
+): CartState => {
   switch (action.type) {
-    case ECartActions.AddCartItemSuccess: {
+    case CartActionTypes.AddCartItemSuccess: {
       let item = state.items.find((item) => item.productId == action.payload);
-      let items: ICartItem[] = [];
+      let items: CartItem[] = [];
 
       if (item === undefined)
         items = state.items.concat({ productId: action.payload, quantity: 1 });
@@ -27,7 +27,7 @@ export const cartReducer = (
         items,
       };
     }
-    case ECartActions.RemoveCartItemSuccess: {
+    case CartActionTypes.RemoveCartItemSuccess: {
       let items = state.items.map((item) =>
         item.productId == action.payload
           ? { ...item, quantity: item.quantity - 1 }
@@ -39,7 +39,7 @@ export const cartReducer = (
         items: items.filter((item) => item.quantity > 0),
       };
     }
-    case ECartActions.PlaceOrderSuccess: {
+    case CartActionTypes.PlaceOrderSuccess: {
       return {
         ...state,
         items: [],
@@ -50,17 +50,17 @@ export const cartReducer = (
   }
 };
 
-const appState = (state: IAppState) => state;
-const cartState = (state: IAppState) => state.cart;
+const appState = (state: AppState) => state;
+const cartState = (state: AppState) => state.cart;
 
 export const selectCartItems = createSelector(
   cartState,
-  (state: ICartState) => state.items
+  (state: CartState) => state.items
 );
 
 export const selectCartItemsWithProductData = createSelector(
   appState,
-  (state: IAppState) =>
+  (state: AppState) =>
     state.cart.items.map((item) => {
       return {
         ...item,

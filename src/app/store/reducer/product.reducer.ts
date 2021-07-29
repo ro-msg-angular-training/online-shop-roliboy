@@ -1,32 +1,32 @@
 import { createSelector } from '@ngrx/store';
-import { EProductActions, ProductActions } from '../action/product.action';
-import { IAppState } from '../state/app.state';
-import { initialProductState, IProductState } from '../state/product.state';
+import { ProductActionTypes, ProductActions } from '../action/product.action';
+import { AppState } from '../state/app.state';
+import { initialProductState, ProductState } from '../state/product.state';
 
 export const productReducer = (
   state = initialProductState,
   action: ProductActions
-): IProductState => {
+): ProductState => {
   switch (action.type) {
-    case EProductActions.GetProductsSuccess: {
+    case ProductActionTypes.GetProductsSuccess: {
       return {
         ...state,
         products: action.payload,
       };
     }
-    case EProductActions.GetProductSuccess: {
+    case ProductActionTypes.GetProductSuccess: {
       return {
         ...state,
         selectedProduct: action.payload,
       };
     }
-    case EProductActions.AddProductSuccess: {
+    case ProductActionTypes.AddProductSuccess: {
       return {
         ...state,
         products: state.products.concat(action.payload),
       };
     }
-    case EProductActions.UpdateProductSuccess: {
+    case ProductActionTypes.UpdateProductSuccess: {
       return {
         ...state,
         products: state.products.map((product) =>
@@ -34,7 +34,7 @@ export const productReducer = (
         ),
       };
     }
-    case EProductActions.DeleteProductSuccess: {
+    case ProductActionTypes.DeleteProductSuccess: {
       return {
         ...state,
         products: state.products.filter(
@@ -48,14 +48,14 @@ export const productReducer = (
 };
 
 
-const productState = (state: IAppState) => state.product;
+const productState = (state: AppState) => state.product;
 
 export const selectProductList = createSelector(
   productState,
-  (state: IProductState) => state.products
+  (state: ProductState) => state.products
 );
 
 export const selectSelectedProduct = createSelector(
   productState,
-  (state: IProductState) => state.selectedProduct
+  (state: ProductState) => state.selectedProduct
 );

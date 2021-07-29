@@ -1,25 +1,25 @@
 import { HttpErrorResponse } from '@angular/common/http';
 import { Action } from '@ngrx/store';
-import { ILoginCredentials, IUser } from 'src/app/model/user.model';
+import { LoginCredentials, User } from 'src/app/model/user.model';
 
-export enum EAuthActions {
+export enum AuthActionTypes {
   AuthLogin = '[auth] login',
   AuthLoginSuccess = '[auth] login success',
   AuthLoginError = '[auth] login failed',
 }
 
 export class AuthLogin implements Action {
-  public readonly type = EAuthActions.AuthLogin;
-  constructor(public payload: ILoginCredentials) {}
+  public readonly type = AuthActionTypes.AuthLogin;
+  constructor(public payload: LoginCredentials) {}
 }
 
 export class AuthLoginSuccess implements Action {
-  public readonly type = EAuthActions.AuthLoginSuccess;
-  constructor(public payload: IUser) {}
+  public readonly type = AuthActionTypes.AuthLoginSuccess;
+  constructor(public payload: User) {}
 }
 
 export class AuthLoginError implements Action {
-  public readonly type = EAuthActions.AuthLoginError;
+  public readonly type = AuthActionTypes.AuthLoginError;
   constructor(public payload: HttpErrorResponse) {}
 }
 

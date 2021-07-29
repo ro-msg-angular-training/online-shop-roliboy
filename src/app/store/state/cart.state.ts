@@ -1,9 +1,9 @@
-import { ICartItem } from 'src/app/model/cart-item.model';
+import { CartItem } from 'src/app/model/cart-item.model';
 
-export interface ICartState {
-  items: ICartItem[];
+export interface CartState {
+  items: CartItem[];
 }
 
-export const initialCartState: ICartState = {
+export const initialCartState: CartState = {
   items: [],
 };

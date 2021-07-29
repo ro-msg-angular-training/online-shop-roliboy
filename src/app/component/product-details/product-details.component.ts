@@ -3,12 +3,12 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { ofType } from '@ngrx/effects';
 import { ActionsSubject, select, Store } from '@ngrx/store';
 import { Observable, Subscription } from 'rxjs';
-import { IProduct } from 'src/app/model/product.model';
+import { Product } from 'src/app/model/product.model';
 import { AddCartItem } from 'src/app/store/action/cart.action';
-import { DeleteProduct, DeleteProductSuccess, EProductActions, GetProduct } from 'src/app/store/action/product.action';
+import { DeleteProduct, DeleteProductSuccess, ProductActionTypes, GetProduct } from 'src/app/store/action/product.action';
 import { selectIsAdmin, selectIsCustomer } from 'src/app/store/reducer/auth.reducer';
 import { selectSelectedProduct } from 'src/app/store/reducer/product.reducer';
-import { IAppState } from 'src/app/store/state/app.state';
+import { AppState } from 'src/app/store/state/app.state';
 
 @Component({
   selector: 'app-product-details',
@@ -25,7 +25,7 @@ export class ProductDetailsComponent implements OnInit {
   isDeleteModalShown: boolean = false;
 
   constructor(
-    private store: Store<IAppState>,
+    private store: Store<AppState>,
     private activatedRoute: ActivatedRoute,
     private router: Router,
     private actionsSubject$: ActionsSubject
@@ -36,7 +36,7 @@ export class ProductDetailsComponent implements OnInit {
     this.store.dispatch(new GetProduct(this.id));
 
     this.productDeletedSubscription$ = this.actionsSubject$
-      .pipe(ofType<DeleteProductSuccess>(EProductActions.DeleteProductSuccess))
+      .pipe(ofType<DeleteProductSuccess>(ProductActionTypes.DeleteProductSuccess))
       .subscribe(() => {
         this.productDeletedSubscription$.unsubscribe();
         // TODO: use html element instead alert to notify the user

@@ -8,7 +8,8 @@ import {
   AuthLogin,
   AuthLoginError,
   AuthLoginSuccess,
-  EAuthActions,
+  AuthActions,
+  AuthActionTypes,
 } from '../action/auth.action';
 
 @Injectable()
@@ -21,7 +22,7 @@ export class AuthEffects {
 
   authLogin$ = createEffect(() => {
     return this._actions$.pipe(
-      ofType<AuthLogin>(EAuthActions.AuthLogin),
+      ofType<AuthLogin>(AuthActionTypes.AuthLogin),
       map((action) => action.payload),
       switchMap((credentials) =>
         this._service.login(credentials).pipe(

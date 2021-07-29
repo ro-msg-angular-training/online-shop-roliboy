@@ -4,14 +4,14 @@ import { Store } from '@ngrx/store';
 import {
   AddCartItem,
   AddCartItemSuccess,
-  ECartActions,
+  CartActionTypes,
   PlaceOrder,
   PlaceOrderError,
   PlaceOrderSuccess,
   RemoveCartItem,
   RemoveCartItemSuccess,
 } from '../action/cart.action';
-import { IAppState } from '../state/app.state';
+import { AppState } from '../state/app.state';
 import { catchError, map, switchMap, withLatestFrom } from 'rxjs/operators';
 import { of } from 'rxjs';
 import { OrderService } from 'src/app/service/order.service';
@@ -23,13 +23,13 @@ export class CartEffects {
   constructor(
     private _actions$: Actions,
     private _service: OrderService,
-    private _store: Store<IAppState>
+    private _store: Store<AppState>
   ) {}
 
   // ?
   addCartItem$ = createEffect(() => {
     return this._actions$.pipe(
-      ofType<AddCartItem>(ECartActions.AddCartItem),
+      ofType<AddCartItem>(CartActionTypes.AddCartItem),
       map((action) => action.payload),
       switchMap((item) => of(new AddCartItemSuccess(item)))
     );
@@ -37,7 +37,7 @@ export class CartEffects {
 
   removeCartItem$ = createEffect(() => {
     return this._actions$.pipe(
-      ofType<RemoveCartItem>(ECartActions.RemoveCartItem),
+      ofType<RemoveCartItem>(CartActionTypes.RemoveCartItem),
       map((action) => action.payload),
       switchMap((item) => of(new RemoveCartItemSuccess(item)))
     );
@@ -45,7 +45,7 @@ export class CartEffects {
 
   placeOrder$ = createEffect(() => {
     return this._actions$.pipe(
-      ofType<PlaceOrder>(ECartActions.PlaceOrder),
+      ofType<PlaceOrder>(CartActionTypes.PlaceOrder),
       withLatestFrom(
         this._store.select(selectCartItems),
         this._store.select(selectUser)

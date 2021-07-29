@@ -2,7 +2,7 @@ import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { environment } from 'src/environments/environment';
-import { IProduct } from '../model/product.model';
+import { Product } from '../model/product.model';
 
 @Injectable({
   providedIn: 'root',
@@ -10,24 +10,24 @@ import { IProduct } from '../model/product.model';
 export class ProductService {
   constructor(private httpClient: HttpClient) {}
 
-  getProducts(): Observable<IProduct[]> {
-    return this.httpClient.get<IProduct[]>(`${environment.apiUrl}/products`);
+  getProducts(): Observable<Product[]> {
+    return this.httpClient.get<Product[]>(`${environment.apiUrl}/products`);
   }
 
-  createProduct(product: IProduct): Observable<IProduct> {
-    return this.httpClient.post<IProduct>(
+  createProduct(product: Product): Observable<Product> {
+    return this.httpClient.post<Product>(
       `${environment.apiUrl}/products`,
       product
     );
   }
 
-  retrieveProduct(id: number): Observable<IProduct> {
-    return this.httpClient.get<IProduct>(
+  retrieveProduct(id: number): Observable<Product> {
+    return this.httpClient.get<Product>(
       `${environment.apiUrl}/products/${id}`
     );
   }
 
-  updateProduct(product: IProduct): Observable<void> {
+  updateProduct(product: Product): Observable<void> {
     return this.httpClient.put<void>(
       `${environment.apiUrl}/products/${product.id}`,
       product

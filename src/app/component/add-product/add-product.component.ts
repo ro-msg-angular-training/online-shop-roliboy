@@ -7,9 +7,9 @@ import { Subscription } from 'rxjs';
 import {
   AddProduct,
   AddProductSuccess,
-  EProductActions,
+  ProductActionTypes,
 } from 'src/app/store/action/product.action';
-import { IAppState } from 'src/app/store/state/app.state';
+import { AppState } from 'src/app/store/state/app.state';
 
 @Component({
   selector: 'app-add-product',
@@ -28,7 +28,7 @@ export class AddProductComponent implements OnInit, OnDestroy {
   });
 
   constructor(
-    private store: Store<IAppState>,
+    private store: Store<AppState>,
     private location: Location,
     private fb: FormBuilder,
     private actionsSubject$: ActionsSubject
@@ -36,7 +36,7 @@ export class AddProductComponent implements OnInit, OnDestroy {
 
   ngOnInit(): void {
     this.productAddedSubscription$ = this.actionsSubject$
-      .pipe(ofType<AddProductSuccess>(EProductActions.AddProductSuccess))
+      .pipe(ofType<AddProductSuccess>(ProductActionTypes.AddProductSuccess))
       .subscribe(() => {
         // TODO: use html element instead alert to notify the user
         alert('product created');

@@ -4,7 +4,7 @@ import { select, Store } from '@ngrx/store';
 import { GetProducts } from 'src/app/store/action/product.action';
 import { selectIsAdmin, selectIsCustomer } from 'src/app/store/reducer/auth.reducer';
 import { selectProductList } from 'src/app/store/reducer/product.reducer';
-import { IAppState } from 'src/app/store/state/app.state';
+import { AppState } from 'src/app/store/state/app.state';
 
 @Component({
   selector: 'app-product-list',
@@ -16,7 +16,7 @@ export class ProductListComponent implements OnInit {
   isAdmin$ = this.store.pipe(select(selectIsAdmin));
   isCustomer$ = this.store.pipe(select(selectIsCustomer));
 
-  constructor(private store: Store<IAppState>, private router: Router) {}
+  constructor(private store: Store<AppState>, private router: Router) {}
 
   ngOnInit(): void {
     this.store.dispatch(new GetProducts());

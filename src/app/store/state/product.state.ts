@@ -1,11 +1,11 @@
-import { IProduct } from 'src/app/model/product.model';
+import { Product } from 'src/app/model/product.model';
 
-export interface IProductState {
-  products: IProduct[];
-  selectedProduct?: IProduct;
+export interface ProductState {
+  products: Product[];
+  selectedProduct?: Product;
 }
 
-export const initialProductState: IProductState = {
+export const initialProductState: ProductState = {
   products: [],
   selectedProduct: undefined,
 };

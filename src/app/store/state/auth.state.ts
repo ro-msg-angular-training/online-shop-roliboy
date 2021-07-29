@@ -1,13 +1,13 @@
-import { IUser } from 'src/app/model/user.model';
+import { User } from 'src/app/model/user.model';
 
-export interface IAuthState {
-  user?: IUser;
+export interface AuthState {
+  user?: User;
   hasAuthError: boolean;
   authErrorMessage: string;
   isAuthenticated: boolean;
 }
 
-export const initialAuthState: IAuthState = {
+export const initialAuthState: AuthState = {
   user: undefined,
   hasAuthError: false,
   authErrorMessage: '',
