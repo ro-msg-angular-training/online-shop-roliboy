@@ -1,12 +1,17 @@
 import { Location } from '@angular/common';
-import { Component, OnInit } from '@angular/core';
+import { Component, OnDestroy, OnInit } from '@angular/core';
 import { FormBuilder } from '@angular/forms';
-import { select, Store } from '@ngrx/store';
-import { AuthLogin } from 'src/app/store/action/auth.action';
+import { ofType } from '@ngrx/effects';
+import { ActionsSubject, select, Store } from '@ngrx/store';
+import { Subscription } from 'rxjs';
+import {
+  AuthLogin,
+  AuthLoginSuccess,
+  EAuthActions,
+} from 'src/app/store/action/auth.action';
 import {
   selectAuthErrorMessage,
   selectHasAuthError,
-  selectIsUserAuthenticated,
 } from 'src/app/store/selector/auth.selector';
 import { IAppState } from 'src/app/store/state/app.state';
 
@@ -18,27 +23,30 @@ import { IAppState } from 'src/app/store/state/app.state';
 export class LoginPageComponent implements OnInit {
   hasAuthError$ = this.store.pipe(select(selectHasAuthError));
   authErrorMessage$ = this.store.pipe(select(selectAuthErrorMessage));
+  userAuthenticatedSubscription$ = new Subscription();
 
   loginForm = this.fb.group({
     // username: [''],
     // password: ['']
-    // username: ['doej'],
-    // password: ['password']
-    username: ['blackj'],
-    password: ['12345678'],
+    username: ['doej'],
+    password: ['password'],
+    // username: ['blackj'],
+    // password: ['12345678'],
   });
 
   constructor(
     private store: Store<IAppState>,
     private location: Location,
-    private fb: FormBuilder
+    private fb: FormBuilder,
+    private actionsSubject$: ActionsSubject
   ) {}
 
   ngOnInit(): void {
-    this.store
-      .pipe(select(selectIsUserAuthenticated))
-      .subscribe((authenticated) => {
-        if (authenticated) this.location.back();
+    this.userAuthenticatedSubscription$ = this.actionsSubject$
+      .pipe(ofType<AuthLoginSuccess>(EAuthActions.AuthLoginSuccess))
+      .subscribe(() => {
+        this.userAuthenticatedSubscription$.unsubscribe();
+        this.location.back();
       });
   }
 

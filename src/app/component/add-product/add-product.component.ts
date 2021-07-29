@@ -1,8 +1,14 @@
 import { Location } from '@angular/common';
-import { Component } from '@angular/core';
+import { Component, OnDestroy, OnInit } from '@angular/core';
 import { FormBuilder, Validators } from '@angular/forms';
-import { Store } from '@ngrx/store';
-import { AddProduct } from 'src/app/store/action/product.action';
+import { ofType } from '@ngrx/effects';
+import { ActionsSubject, Store } from '@ngrx/store';
+import { Subscription } from 'rxjs';
+import {
+  AddProduct,
+  AddProductSuccess,
+  EProductActions,
+} from 'src/app/store/action/product.action';
 import { IAppState } from 'src/app/store/state/app.state';
 
 @Component({
@@ -10,7 +16,9 @@ import { IAppState } from 'src/app/store/state/app.state';
   templateUrl: './add-product.component.html',
   styleUrls: ['./add-product.component.scss'],
 })
-export class AddProductComponent {
+export class AddProductComponent implements OnInit, OnDestroy {
+  productAddedSubscription$ = new Subscription();
+
   productForm = this.fb.group({
     name: ['', Validators.required],
     category: ['', Validators.required],
@@ -22,13 +30,26 @@ export class AddProductComponent {
   constructor(
     private store: Store<IAppState>,
     private location: Location,
-    private fb: FormBuilder
+    private fb: FormBuilder,
+    private actionsSubject$: ActionsSubject
   ) {}
+
+  ngOnInit(): void {
+    this.productAddedSubscription$ = this.actionsSubject$
+      .pipe(ofType<AddProductSuccess>(EProductActions.AddProductSuccess))
+      .subscribe(() => {
+        // TODO: use html element instead alert to notify the user
+        alert('product created');
+        this.productForm.reset();
+      });
+  }
+
+  ngOnDestroy(): void {
+    this.productAddedSubscription$.unsubscribe();
+  }
 
   onSubmit(): void {
     this.store.dispatch(new AddProduct(this.productForm.value));
-    // TODO: only do this on success
-    this.location.back();
   }
 
   onCancel(): void {

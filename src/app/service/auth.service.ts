@@ -11,7 +11,6 @@ export class AuthService {
   constructor(private httpClient: HttpClient) {}
 
   login(credentials: ILoginCredentials): Observable<IUser> {
-    console.log(environment.apiUrl);
     return this.httpClient.post<IUser>(
       `${environment.apiUrl}/login`,
       credentials

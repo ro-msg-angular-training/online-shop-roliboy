@@ -1,8 +1,11 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
-import { select, Store } from '@ngrx/store';
+import { ofType } from '@ngrx/effects';
+import { ActionsSubject, select, Store } from '@ngrx/store';
+import { Observable, Subscription } from 'rxjs';
+import { IProduct } from 'src/app/model/product.model';
 import { AddCartItem } from 'src/app/store/action/cart.action';
-import { DeleteProduct, GetProduct } from 'src/app/store/action/product.action';
+import { DeleteProduct, DeleteProductSuccess, EProductActions, GetProduct } from 'src/app/store/action/product.action';
 import {
   selectIsAdmin,
   selectIsCustomer,
@@ -19,21 +22,30 @@ export class ProductDetailsComponent implements OnInit {
   product$ = this.store.pipe(select(selectSelectedProduct));
   isAdmin$ = this.store.pipe(select(selectIsAdmin));
   isCustomer$ = this.store.pipe(select(selectIsCustomer));
+  productDeletedSubscription$ = new Subscription();
 
-  productId?: number;
+  id: number = 0;
   isDeleteModalShown: boolean = false;
 
   constructor(
     private store: Store<IAppState>,
     private activatedRoute: ActivatedRoute,
-    private router: Router
+    private router: Router,
+    private actionsSubject$: ActionsSubject
   ) {}
 
   ngOnInit(): void {
-    this.activatedRoute.params.subscribe((params) =>
-      this.store.dispatch(new GetProduct(params['id']))
-    );
-    this.product$.subscribe((product) => (this.productId = product?.id));
+    this.id = parseInt(this.activatedRoute.snapshot.params['id']);
+    this.store.dispatch(new GetProduct(this.id));
+
+    this.productDeletedSubscription$ = this.actionsSubject$
+      .pipe(ofType<DeleteProductSuccess>(EProductActions.DeleteProductSuccess))
+      .subscribe(() => {
+        this.productDeletedSubscription$.unsubscribe();
+        // TODO: use html element instead alert to notify the user
+        alert('product deleted');
+        this.router.navigate(['products']);
+      });
   }
 
   showDeleteModal(): void {
@@ -45,18 +57,14 @@ export class ProductDetailsComponent implements OnInit {
   }
 
   editProduct(): void {
-    this.router.navigate(['products', this.productId, 'edit']);
+    this.router.navigate(['products', this.id, 'edit']);
   }
 
   deleteProduct(): void {
-    if (this.productId === undefined) return;
-    this.store.dispatch(new DeleteProduct(this.productId));
-    this.router.navigate(['products']);
+    this.store.dispatch(new DeleteProduct(this.id));
   }
 
-  // TODO: notify user
   addToCart(): void {
-    if (this.productId === undefined) return;
-    this.store.dispatch(new AddCartItem(this.productId));
+    this.store.dispatch(new AddCartItem(this.id));
   }
 }
