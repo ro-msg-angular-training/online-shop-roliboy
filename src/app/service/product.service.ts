@@ -27,14 +27,14 @@ export class ProductService {
     );
   }
 
-  updateProduct(product: IProduct): Observable<any> {
-    return this.httpClient.put(
+  updateProduct(product: IProduct): Observable<void> {
+    return this.httpClient.put<void>(
       `${environment.apiUrl}/products/${product.id}`,
       product
     );
   }
 
-  deleteProduct(id: number): Observable<any> {
-    return this.httpClient.delete(`${environment.apiUrl}/products/${id}`);
+  deleteProduct(id: number): Observable<void> {
+    return this.httpClient.delete<void>(`${environment.apiUrl}/products/${id}`);
   }
 }
