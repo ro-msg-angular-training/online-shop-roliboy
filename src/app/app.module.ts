@@ -28,18 +28,18 @@ import { AuthEffects } from './store/effect/auth.effect';
     ShoppingCartComponent,
     EditProductComponent,
     AddProductComponent,
-    LoginPageComponent
+    LoginPageComponent,
   ],
   imports: [
     BrowserModule,
     HttpClientModule,
     StoreModule.forRoot(appReducer),
     EffectsModule.forRoot([ProductEffects, CartEffects, AuthEffects]),
-    !environment.production? StoreDevtoolsModule.instrument() : [],
+    !environment.production ? StoreDevtoolsModule.instrument() : [],
     AppRoutingModule,
-    ReactiveFormsModule
+    ReactiveFormsModule,
   ],
   providers: [],
-  bootstrap: [AppComponent]
+  bootstrap: [AppComponent],
 })
-export class AppModule { }
+export class AppModule {}

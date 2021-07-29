@@ -1,53 +1,65 @@
 <section class="hero is-fullheight">
-    <div class="hero-body">
-        <div class="container">
-            <div class="level">
-                <div class="level-left">
-                    <div class="level-item">
-                        <p class="title is-2">
-                            Products
-                        </p>
-                    </div>
-                </div>
-
-                <div class="level-right">
-                    <div class="level-item" *ngIf="isAdmin$ | async">
-                        <button class="button action-button is-large is-info" (click)="showAddProduct()">
-                            ADD
-                        </button>
-                    </div>
-                    <div class="level-item" *ngIf="isCustomer$ | async">
-                        <button class="button action-button is-large is-info" (click)="showShoppingCart()">
-                            <span class="icon">
-                                <i class="fas fa-shopping-cart"></i>
-                            </span>
-                        </button>
-                    </div>
-                </div>
-            </div>
-
-            <table class="table table-collapse-last is-bordered is-striped is-hoverable is-fullwidth">
-                <thead>
-                    <tr>
-                        <th>Category</th>
-                        <th>Product Name</th>
-                        <th>Price</th>
-                        <th></th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <tr *ngFor="let product of products$ | async">
-                        <td class="pb-0">{{product.category}}</td>
-                        <td class="pb-0">{{product.name}}</td>
-                        <td class="pb-0">{{product.price}}</td>
-                        <td class="pb-0 has-text-centered">
-                            <span class="icon has-text-info is-clickable" (click)="showProductDetails(product.id)">
-                                <i class="fas fa-angle-right is-size-2"></i>
-                            </span>
-                        </td>
-                    </tr>
-                </tbody>
-            </table>
+  <div class="hero-body">
+    <div class="container">
+      <div class="level">
+        <div class="level-left">
+          <div class="level-item">
+            <p class="title is-2">Products</p>
+          </div>
         </div>
+
+        <div class="level-right">
+          <div class="level-item" *ngIf="isAdmin$ | async">
+            <button
+              class="button action-button is-large is-info"
+              (click)="showAddProduct()"
+            >
+              ADD
+            </button>
+          </div>
+          <div class="level-item" *ngIf="isCustomer$ | async">
+            <button
+              class="button action-button is-large is-info"
+              (click)="showShoppingCart()"
+            >
+              <span class="icon">
+                <i class="fas fa-shopping-cart"></i>
+              </span>
+            </button>
+          </div>
+        </div>
+      </div>
+
+      <table
+        class="
+          table table-collapse-last
+          is-bordered is-striped is-hoverable is-fullwidth
+        "
+      >
+        <thead>
+          <tr>
+            <th>Category</th>
+            <th>Product Name</th>
+            <th>Price</th>
+            <th></th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let product of products$ | async">
+            <td class="pb-0">{{ product.category }}</td>
+            <td class="pb-0">{{ product.name }}</td>
+            <td class="pb-0">{{ product.price }}</td>
+            <td class="pb-0 has-text-centered">
+              <span
+                class="icon has-text-info is-clickable"
+                (click)="showProductDetails(product.id)"
+              >
+                <i class="fas fa-angle-right is-size-2"></i>
+              </span>
+            </td>
+          </tr>
+        </tbody>
+      </table>
     </div>
+  </div>
 </section>

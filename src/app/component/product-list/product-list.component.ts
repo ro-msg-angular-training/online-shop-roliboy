@@ -1,42 +1,39 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { select, Store } from '@ngrx/store';
-import { AddCartItem } from 'src/app/store/action/cart.action';
 import { GetProducts } from 'src/app/store/action/product.action';
-import { selectIsAdmin, selectIsCustomer, selectUser } from 'src/app/store/selector/auth.selector';
+import {
+  selectIsAdmin,
+  selectIsCustomer,
+} from 'src/app/store/selector/auth.selector';
 import { selectProductList } from 'src/app/store/selector/product.selector';
 import { IAppState } from 'src/app/store/state/app.state';
-import { AuthService } from '../../service/auth.service';
-import { ProductService } from '../../service/product.service';
 
 @Component({
   selector: 'app-product-list',
   templateUrl: './product-list.component.html',
-  styleUrls: ['./product-list.component.scss']
+  styleUrls: ['./product-list.component.scss'],
 })
 export class ProductListComponent implements OnInit {
-  products$ = this.store.pipe(select(selectProductList))
-  isAdmin$ = this.store.pipe(select(selectIsAdmin))
-  isCustomer$ = this.store.pipe(select(selectIsCustomer))
+  products$ = this.store.pipe(select(selectProductList));
+  isAdmin$ = this.store.pipe(select(selectIsAdmin));
+  isCustomer$ = this.store.pipe(select(selectIsCustomer));
 
-  constructor(
-    private store: Store<IAppState>,
-    private router: Router
-  ) { }
+  constructor(private store: Store<IAppState>, private router: Router) {}
 
   ngOnInit(): void {
-    this.store.dispatch(new GetProducts())
+    this.store.dispatch(new GetProducts());
   }
 
   showProductDetails(id: number): void {
-    this.router.navigate(['products', id])
+    this.router.navigate(['products', id]);
   }
 
   showShoppingCart(): void {
-    this.router.navigate(['cart'])
+    this.router.navigate(['cart']);
   }
 
   showAddProduct(): void {
-    this.router.navigate(['products', 'add'])
+    this.router.navigate(['products', 'add']);
   }
 }

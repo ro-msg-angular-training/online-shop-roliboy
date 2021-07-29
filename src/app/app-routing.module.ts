@@ -13,45 +13,45 @@ const routes: Routes = [
     path: 'products',
     component: ProductListComponent,
     canActivate: [AuthGuard],
-    data: { role: 'user' }
+    data: { role: 'user' },
   },
   {
     path: 'products/add',
     component: AddProductComponent,
     canActivate: [AuthGuard],
-    data: { role: 'admin' }
+    data: { role: 'admin' },
   },
   {
     path: 'products/:id',
     component: ProductDetailsComponent,
     canActivate: [AuthGuard],
-    data: { role: 'user' }
+    data: { role: 'user' },
   },
   {
     path: 'products/:id/edit',
     component: EditProductComponent,
     canActivate: [AuthGuard],
-    data: { role: 'admin' }
+    data: { role: 'admin' },
   },
   {
     path: 'cart',
     component: ShoppingCartComponent,
     canActivate: [AuthGuard],
-    data: { role: 'customer' }
+    data: { role: 'customer' },
   },
   {
     path: 'login',
-    component: LoginPageComponent
+    component: LoginPageComponent,
   },
   {
     path: '',
     redirectTo: '/products',
-    pathMatch: 'full'
-  }
-]
+    pathMatch: 'full',
+  },
+];
 
 @NgModule({
   imports: [RouterModule.forRoot(routes)],
-  exports: [RouterModule]
+  exports: [RouterModule],
 })
-export class AppRoutingModule { }
+export class AppRoutingModule {}
