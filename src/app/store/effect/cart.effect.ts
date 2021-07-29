@@ -5,6 +5,7 @@ import {
   AddCartItem,
   AddCartItemSuccess,
   CartActionTypes,
+  IncrementCartItemSuccess,
   PlaceOrder,
   PlaceOrderError,
   PlaceOrderSuccess,
@@ -26,12 +27,17 @@ export class CartEffects {
     private _store: Store<AppState>
   ) {}
 
-  // ?
   addCartItem$ = createEffect(() => {
     return this._actions$.pipe(
       ofType<AddCartItem>(CartActionTypes.AddCartItem),
       map((action) => action.payload),
-      switchMap((item) => of(new AddCartItemSuccess(item)))
+      withLatestFrom(this._store.select(selectCartItems)),
+      switchMap(([item, cartItems]) => {
+        if (cartItems.find(cartItem => cartItem.productId == item))
+          return of(new IncrementCartItemSuccess(item))
+        else
+          return of(new AddCartItemSuccess(item))
+      })
     );
   });
 

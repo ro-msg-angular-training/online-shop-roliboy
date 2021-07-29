@@ -3,6 +3,7 @@ import { Action } from '@ngrx/store';
 export enum CartActionTypes {
   AddCartItem = '[cart] add item',
   AddCartItemSuccess = '[cart] add item success',
+  IncrementCartItemSuccess = '[cart] increment cart item success',
   RemoveCartItem = '[cart] remove item',
   RemoveCartItemSuccess = '[cart] remove item success',
   PlaceOrder = '[cart] place order',
@@ -17,6 +18,11 @@ export class AddCartItem implements Action {
 
 export class AddCartItemSuccess implements Action {
   public readonly type = CartActionTypes.AddCartItemSuccess;
+  constructor(public payload: number) {}
+}
+
+export class IncrementCartItemSuccess implements Action {
+  public readonly type = CartActionTypes.IncrementCartItemSuccess;
   constructor(public payload: number) {}
 }
 
@@ -45,6 +51,7 @@ export class PlaceOrderError implements Action {
 export type CartActions =
   | AddCartItem
   | AddCartItemSuccess
+  | IncrementCartItemSuccess
   | RemoveCartItem
   | RemoveCartItemSuccess
   | PlaceOrder

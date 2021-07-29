@@ -10,25 +10,23 @@ export const cartReducer = (
 ): CartState => {
   switch (action.type) {
     case CartActionTypes.AddCartItemSuccess: {
-      let item = state.items.find((item) => item.productId == action.payload);
-      let items: CartItem[] = [];
-
-      if (item === undefined)
-        items = state.items.concat({ productId: action.payload, quantity: 1 });
-      else
-        items = state.items.map((item) =>
+      return {
+        ...state,
+        items: state.items.concat({ productId: action.payload, quantity: 1 }),
+      };
+    }
+    case CartActionTypes.IncrementCartItemSuccess: {
+      return {
+        ...state,
+        items: state.items.map((item) =>
           item.productId == action.payload
             ? { ...item, quantity: item.quantity + 1 }
             : item
-        );
-
-      return {
-        ...state,
-        items,
+        ),
       };
     }
     case CartActionTypes.RemoveCartItemSuccess: {
-      let items = state.items.map((item) =>
+      const items = state.items.map((item) =>
         item.productId == action.payload
           ? { ...item, quantity: item.quantity - 1 }
           : item
