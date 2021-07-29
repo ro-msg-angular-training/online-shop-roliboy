@@ -2,11 +2,8 @@ import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { select, Store } from '@ngrx/store';
 import { GetProducts } from 'src/app/store/action/product.action';
-import {
-  selectIsAdmin,
-  selectIsCustomer,
-} from 'src/app/store/selector/auth.selector';
-import { selectProductList } from 'src/app/store/selector/product.selector';
+import { selectIsAdmin, selectIsCustomer } from 'src/app/store/reducer/auth.reducer';
+import { selectProductList } from 'src/app/store/reducer/product.reducer';
 import { IAppState } from 'src/app/store/state/app.state';
 
 @Component({

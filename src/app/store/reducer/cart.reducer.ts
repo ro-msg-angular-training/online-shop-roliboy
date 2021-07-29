@@ -1,5 +1,7 @@
+import { createSelector } from '@ngrx/store';
 import { ICartItem } from 'src/app/model/cart-item.model';
 import { CartActions, ECartActions } from '../action/cart.action';
+import { IAppState } from '../state/app.state';
 import { ICartState, initialCartState } from '../state/cart.state';
 
 export const cartReducer = (
@@ -47,3 +49,24 @@ export const cartReducer = (
       return state;
   }
 };
+
+const appState = (state: IAppState) => state;
+const cartState = (state: IAppState) => state.cart;
+
+export const selectCartItems = createSelector(
+  cartState,
+  (state: ICartState) => state.items
+);
+
+export const selectCartItemsWithProductData = createSelector(
+  appState,
+  (state: IAppState) =>
+    state.cart.items.map((item) => {
+      return {
+        ...item,
+        ...state.product.products.find(
+          (product) => product.id == item.productId
+        ),
+      };
+    })
+);

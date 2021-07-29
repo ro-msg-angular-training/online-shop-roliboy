@@ -9,10 +9,7 @@ import {
   AuthLoginSuccess,
   EAuthActions,
 } from 'src/app/store/action/auth.action';
-import {
-  selectAuthErrorMessage,
-  selectHasAuthError,
-} from 'src/app/store/selector/auth.selector';
+import { selectAuthErrorMessage, selectHasAuthError } from 'src/app/store/reducer/auth.reducer';
 import { IAppState } from 'src/app/store/state/app.state';
 
 @Component({

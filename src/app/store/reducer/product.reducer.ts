@@ -1,4 +1,6 @@
+import { createSelector } from '@ngrx/store';
 import { EProductActions, ProductActions } from '../action/product.action';
+import { IAppState } from '../state/app.state';
 import { initialProductState, IProductState } from '../state/product.state';
 
 export const productReducer = (
@@ -44,3 +46,16 @@ export const productReducer = (
       return state;
   }
 };
+
+
+const productState = (state: IAppState) => state.product;
+
+export const selectProductList = createSelector(
+  productState,
+  (state: IProductState) => state.products
+);
+
+export const selectSelectedProduct = createSelector(
+  productState,
+  (state: IProductState) => state.selectedProduct
+);

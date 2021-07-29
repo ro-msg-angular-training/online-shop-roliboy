@@ -11,7 +11,7 @@ import {
   UpdateProduct,
   UpdateProductSuccess,
 } from 'src/app/store/action/product.action';
-import { selectSelectedProduct } from 'src/app/store/selector/product.selector';
+import { selectSelectedProduct } from 'src/app/store/reducer/product.reducer';
 import { IAppState } from 'src/app/store/state/app.state';
 
 @Component({

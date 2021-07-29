@@ -8,8 +8,8 @@ import {
   PlaceOrderSuccess,
   RemoveCartItem,
 } from 'src/app/store/action/cart.action';
-import { selectUser } from 'src/app/store/selector/auth.selector';
-import { selectCartItemsWithProductData } from 'src/app/store/selector/cart.selector';
+import { selectUser } from 'src/app/store/reducer/auth.reducer';
+import { selectCartItemsWithProductData } from 'src/app/store/reducer/cart.reducer';
 import { IAppState } from 'src/app/store/state/app.state';
 
 @Component({

@@ -6,11 +6,8 @@ import { Observable, Subscription } from 'rxjs';
 import { IProduct } from 'src/app/model/product.model';
 import { AddCartItem } from 'src/app/store/action/cart.action';
 import { DeleteProduct, DeleteProductSuccess, EProductActions, GetProduct } from 'src/app/store/action/product.action';
-import {
-  selectIsAdmin,
-  selectIsCustomer,
-} from 'src/app/store/selector/auth.selector';
-import { selectSelectedProduct } from 'src/app/store/selector/product.selector';
+import { selectIsAdmin, selectIsCustomer } from 'src/app/store/reducer/auth.reducer';
+import { selectSelectedProduct } from 'src/app/store/reducer/product.reducer';
 import { IAppState } from 'src/app/store/state/app.state';
 
 @Component({
@@ -65,6 +62,7 @@ export class ProductDetailsComponent implements OnInit {
   }
 
   addToCart(): void {
+    // TODO: notify user
     this.store.dispatch(new AddCartItem(this.id));
   }
 }

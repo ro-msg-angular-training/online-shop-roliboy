@@ -13,10 +13,10 @@ import {
 } from '../action/cart.action';
 import { IAppState } from '../state/app.state';
 import { catchError, map, switchMap, withLatestFrom } from 'rxjs/operators';
-import { selectCartItems } from '../selector/cart.selector';
 import { of } from 'rxjs';
 import { OrderService } from 'src/app/service/order.service';
-import { selectUser } from '../selector/auth.selector';
+import { selectCartItems } from '../reducer/cart.reducer';
+import { selectUser } from '../reducer/auth.reducer';
 
 @Injectable()
 export class CartEffects {
