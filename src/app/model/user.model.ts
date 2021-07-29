@@ -1,14 +1,10 @@
-export class User {
+export interface ILoginCredentials {
+  username: string
+  password: string
+}
+
+export interface IUser {
   username: string
   fullName: string
   roles: string[]
-
-  constructor(
-    username: string = '',
-    fullName: string = '',
-    roles: string[] = []) {
-    this.username = username
-    this.fullName = fullName
-    this.roles = roles
-  }
 }

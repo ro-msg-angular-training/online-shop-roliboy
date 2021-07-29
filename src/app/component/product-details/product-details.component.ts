@@ -1,29 +1,37 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
-import { Product } from '../../model/product.model';
+import { select, Store } from '@ngrx/store';
+import { AddCartItem } from 'src/app/store/action/cart.action';
+import { DeleteProduct, GetProduct } from 'src/app/store/action/product.action';
+import { selectIsAdmin, selectIsCustomer, selectUser } from 'src/app/store/selector/auth.selector';
+import { selectSelectedProduct } from 'src/app/store/selector/product.selector';
+import { IAppState } from 'src/app/store/state/app.state';
 import { AuthService } from '../../service/auth.service';
 import { OrderService } from '../../service/order.service';
-import { ProductService } from '../../service/product.service';
 
 @Component({
   selector: 'app-product-details',
   templateUrl: './product-details.component.html',
   styleUrls: ['./product-details.component.scss']
 })
-export class ProductDetailsComponent {
-  product: Product = new Product()
-  isDeleteModalShown: Boolean = false
+export class ProductDetailsComponent implements OnInit {
+  product$ = this.store.pipe(select(selectSelectedProduct))
+  isAdmin$ = this.store.pipe(select(selectIsAdmin))
+  isCustomer$ = this.store.pipe(select(selectIsCustomer))
+
+  productId?: number
+  isDeleteModalShown: boolean = false
 
   constructor(
-    private authService: AuthService,
-    private productService: ProductService,
-    private orderService: OrderService,
+    private store: Store<IAppState>,
     private activatedRoute: ActivatedRoute,
     private router: Router
-  ) {
-    activatedRoute.params.subscribe(params =>
-      productService.retrieveProduct(params['id']).subscribe(product =>
-        this.product = product))
+  ) { }
+
+  ngOnInit(): void {
+    this.activatedRoute.params.subscribe(params =>
+      this.store.dispatch(new GetProduct(params['id'])))
+    this.product$.subscribe(product => this.productId = product?.id)
   }
 
   showDeleteModal(): void {
@@ -35,23 +43,18 @@ export class ProductDetailsComponent {
   }
 
   editProduct(): void {
-    this.router.navigate(['products', this.product.id, 'edit'])
+    this.router.navigate(['products', this.productId, 'edit'])
   }
 
   deleteProduct(): void {
-    this.productService.deleteProduct(this.product.id).subscribe(result =>
-      this.router.navigate(['products']))
+    if (this.productId === undefined) return
+    this.store.dispatch(new DeleteProduct(this.productId))
+    this.router.navigate(['products'])
   }
 
+  // TODO: notify user
   addToCart(): void {
-    this.orderService.addProduct(this.product)
-  }
-
-  isAdmin(): boolean {
-    return this.authService.isAdmin()
-  }
-
-  isCustomer(): boolean {
-    return this.authService.isCustomer()
+    if (this.productId === undefined) return
+    this.store.dispatch(new AddCartItem(this.productId))
   }
 }

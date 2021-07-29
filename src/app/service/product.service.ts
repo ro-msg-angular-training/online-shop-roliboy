@@ -1,7 +1,7 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
-import { Product } from '../model/product.model';
+import { IProduct } from '../model/product.model';
 
 @Injectable({
   providedIn: 'root'
@@ -13,19 +13,19 @@ export class ProductService {
     private httpClient: HttpClient
   ) { }
 
-  getProducts(): Observable<Product[]> {
-    return this.httpClient.get<Product[]>(`${this.apiRoot}/products`)
+  getProducts(): Observable<IProduct[]> {
+    return this.httpClient.get<IProduct[]>(`${this.apiRoot}/products`)
   }
 
-  createProduct(product: Product): Observable<Product> {
-    return this.httpClient.post<Product>(`${this.apiRoot}/products`, product)
+  createProduct(product: IProduct): Observable<IProduct> {
+    return this.httpClient.post<IProduct>(`${this.apiRoot}/products`, product)
   }
 
-  retrieveProduct(id: number): Observable<Product> {
-    return this.httpClient.get<Product>(`${this.apiRoot}/products/${id}`)
+  retrieveProduct(id: number): Observable<IProduct> {
+    return this.httpClient.get<IProduct>(`${this.apiRoot}/products/${id}`)
   }
 
-  updateProduct(product: Product): Observable<any> {
+  updateProduct(product: IProduct): Observable<any> {
     return this.httpClient.put(`${this.apiRoot}/products/${product.id}`, product)
   }
 

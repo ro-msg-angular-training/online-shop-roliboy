@@ -5,13 +5,13 @@
                 <div class="level-left">
                     <div class="level-item">
                         <p class="title is-2">
-                            Product: {{product.name}}
+                            Product: {{(product$ | async)?.name}}
                         </p>
                     </div>
                 </div>
 
                 <div class="level-right">
-                    <div class="level-item" *ngIf="isCustomer()">
+                    <div class="level-item" *ngIf="isCustomer$ | async">
                         <button class="button action-button is-large is-info" (click)="addToCart()">
                             <span class="icon">
                                 <i class="fas fa-plus"></i>
@@ -19,12 +19,12 @@
                             </span>
                         </button>
                     </div>
-                    <div class="level-item" *ngIf="isAdmin()">
+                    <div class="level-item" *ngIf="isAdmin$ | async">
                         <button class="button action-button is-large is-info" (click)="editProduct()">
                             EDIT
                         </button>
                     </div>
-                    <div class="level-item" *ngIf="isAdmin()">
+                    <div class="level-item" *ngIf="isAdmin$ | async">
                         <button class="button action-button is-large is-danger" (click)="showDeleteModal()">
                             DELETE
                         </button>
@@ -38,25 +38,25 @@
                         <tbody>
                             <tr>
                                 <td class="p-4 has-text-right">name:</td>
-                                <td class="p-4">{{product.name}}</td>
+                                <td class="p-4">{{(product$ | async)?.name}}</td>
                             </tr>
                             <tr>
                                 <td class="p-4 has-text-right">category:</td>
-                                <td class="p-4">{{product.category}}</td>
+                                <td class="p-4">{{(product$ | async)?.category}}</td>
                             </tr>
                             <tr>
                                 <td class="p-4 has-text-right">price:</td>
-                                <td class="p-4">{{product.price}} RON</td>
+                                <td class="p-4">{{(product$ | async)?.price}} RON</td>
                             </tr>
                             <tr>
                                 <td class="p-4 has-text-right">description:</td>
-                                <td class="p-4">{{product.description}}</td>
+                                <td class="p-4">{{(product$ | async)?.description}}</td>
                             </tr>
                         </tbody>
                     </table>
                 </div>
                 <div class="column is-2">
-                    <img [src]="product.image">
+                    <img [src]="(product$ | async)?.image">
                 </div>
             </div>
         </div>
@@ -74,7 +74,7 @@
 
         <section class="modal-card-body">
             <div class="content">
-                <p>Are you sure you want to delete {{product.name}}?</p>
+                <p>Are you sure you want to delete {{(product$ | async)?.name}}?</p>
             </div>
         </section>
 

@@ -1,29 +1,47 @@
 import { Location } from '@angular/common';
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { FormBuilder } from '@angular/forms';
-import { AuthService } from '../../service/auth.service';
+import { select, Store } from '@ngrx/store';
+import { AuthLogin } from 'src/app/store/action/auth.action';
+import { selectAuthErrorMessage, selectHasAuthError, selectIsUserAuthenticated } from 'src/app/store/selector/auth.selector';
+import { IAppState } from 'src/app/store/state/app.state';
 
 @Component({
   selector: 'app-login-page',
   templateUrl: './login-page.component.html',
   styleUrls: ['./login-page.component.scss']
 })
-export class LoginPageComponent {
+export class LoginPageComponent implements OnInit {
+  hasAuthError$ = this.store.pipe(select(selectHasAuthError))
+  authErrorMessage$ = this.store.pipe(select(selectAuthErrorMessage))
+
   loginForm = this.fb.group({
     username: [''],
     password: ['']
+    // username: ['doej'],
+    // password: ['password']
+    // username: ['blackj'],
+    // password: ['12345678']
   })
 
   constructor(
-    private authService: AuthService,
+    private store: Store<IAppState>,
     private location: Location,
     private fb: FormBuilder
   ) { }
 
+  ngOnInit(): void {
+    this.store.pipe(select(selectIsUserAuthenticated)).subscribe(authenticated => {
+      if (authenticated)
+        this.location.back()
+    })
+  }
+
   onSubmit(): void {
-    this.authService.login(this.loginForm.value.username, this.loginForm.value.password).subscribe(
-      success => this.location.back(),
-      error => alert(error)
-    )
+    const credentials = {
+      username: this.loginForm.value.username,
+      password: this.loginForm.value.password
+    }
+    this.store.dispatch(new AuthLogin(credentials))
   }
 }

@@ -11,6 +11,14 @@ import { EditProductComponent } from './component/edit-product/edit-product.comp
 import { ReactiveFormsModule } from '@angular/forms';
 import { AddProductComponent } from './component/add-product/add-product.component';
 import { LoginPageComponent } from './component/login-page/login-page.component';
+import { StoreModule } from '@ngrx/store';
+import { appReducer } from './store/reducer/app.reducer';
+import { EffectsModule } from '@ngrx/effects';
+import { CartEffects } from './store/effect/cart.effect';
+import { StoreDevtoolsModule } from '@ngrx/store-devtools';
+import { environment } from 'src/environments/environment';
+import { ProductEffects } from './store/effect/product.effect';
+import { AuthEffects } from './store/effect/auth.effect';
 
 @NgModule({
   declarations: [
@@ -24,8 +32,11 @@ import { LoginPageComponent } from './component/login-page/login-page.component'
   ],
   imports: [
     BrowserModule,
-    AppRoutingModule,
     HttpClientModule,
+    StoreModule.forRoot(appReducer),
+    EffectsModule.forRoot([ProductEffects, CartEffects, AuthEffects]),
+    !environment.production? StoreDevtoolsModule.instrument() : [],
+    AppRoutingModule,
     ReactiveFormsModule
   ],
   providers: [],

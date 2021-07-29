@@ -11,12 +11,12 @@
                 </div>
 
                 <div class="level-right">
-                    <div class="level-item" *ngIf="isAdmin()">
+                    <div class="level-item" *ngIf="isAdmin$ | async">
                         <button class="button action-button is-large is-info" (click)="showAddProduct()">
                             ADD
                         </button>
                     </div>
-                    <div class="level-item" *ngIf="isCustomer()">
+                    <div class="level-item" *ngIf="isCustomer$ | async">
                         <button class="button action-button is-large is-info" (click)="showShoppingCart()">
                             <span class="icon">
                                 <i class="fas fa-shopping-cart"></i>
@@ -36,7 +36,7 @@
                     </tr>
                 </thead>
                 <tbody>
-                    <tr *ngFor="let product of products">
+                    <tr *ngFor="let product of products$ | async">
                         <td class="pb-0">{{product.category}}</td>
                         <td class="pb-0">{{product.name}}</td>
                         <td class="pb-0">{{product.price}}</td>

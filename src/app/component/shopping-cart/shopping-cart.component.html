@@ -1,6 +1,6 @@
 <section class="hero is-fullheight">
     <div class="hero-body">
-        <div class="container">
+        <div class="container" *ngIf="(cartItems$ | async)?.length">
             <div class="level">
                 <div class="level-left">
                     <div class="level-item">
@@ -30,7 +30,7 @@
                     </tr>
                 </thead>
                 <tbody>
-                    <tr *ngFor="let item of cartItems">
+                    <tr *ngFor="let item of cartItems$ | async">
                         <td class="pb-0">{{item.category}}</td>
                         <td class="pb-0">{{item.name}}</td>
                         <td class="pb-0">{{item.price}}</td>
@@ -43,6 +43,17 @@
                     </tr>
                 </tbody>
             </table>
+        </div>
+        <div class="container" *ngIf="!(cartItems$ | async)?.length">
+            <div class="level">
+                <div class="level-left">
+                    <div class="level-item">
+                        <p class="title is-2">
+                            <span>Shopping Cart </span><span class="has-text-weight-light">Empty</span>
+                        </p>
+                    </div>
+                </div>
+            </div>
         </div>
     </div>
 </section>

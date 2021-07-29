@@ -1,8 +1,9 @@
 import { Location } from '@angular/common';
 import { Component } from '@angular/core';
 import { FormBuilder, Validators } from '@angular/forms';
-import { Product } from '../../model/product.model';
-import { ProductService } from '../../service/product.service';
+import { Store } from '@ngrx/store';
+import { AddProduct } from 'src/app/store/action/product.action';
+import { IAppState } from 'src/app/store/state/app.state';
 
 @Component({
   selector: 'app-add-product',
@@ -20,20 +21,22 @@ export class AddProductComponent {
   })
 
   constructor(
-    private productService: ProductService,
+    private store: Store<IAppState>,
     private location: Location,
     private fb: FormBuilder
   ) { }
 
   onSubmit(): void {
-    this.productService.createProduct(new Product(
-      0,
-      this.productForm.value.name,
-      this.productForm.value.category,
-      this.productForm.value.image,
-      this.productForm.value.price,
-      this.productForm.value.description)).subscribe(response =>
-        this.location.back())
+    this.store.dispatch(new AddProduct({
+      id: 0,
+      name: this.productForm.value.name,
+      category: this.productForm.value.category,
+      image: this.productForm.value.image,
+      price: this.productForm.value.price,
+      description: this.productForm.value.description
+    }))
+    // TODO: only do this on success
+    this.location.back()
   }
 
   onCancel(): void {

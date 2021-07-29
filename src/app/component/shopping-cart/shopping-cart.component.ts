@@ -1,7 +1,11 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
+import { select, Store } from '@ngrx/store';
 import { AuthService } from 'src/app/service/auth.service';
-import { CartItem } from '../../model/cart-item.model';
+import { PlaceOrder, RemoveCartItem } from 'src/app/store/action/cart.action';
+import { selectUser } from 'src/app/store/selector/auth.selector';
+import { selectCartItemsWithProductData } from 'src/app/store/selector/cart.selector';
+import { IAppState } from 'src/app/store/state/app.state';
 import { OrderService } from '../../service/order.service';
 
 @Component({
@@ -9,29 +13,26 @@ import { OrderService } from '../../service/order.service';
   templateUrl: './shopping-cart.component.html',
   styleUrls: ['./shopping-cart.component.scss']
 })
-export class ShoppingCartComponent {
-  cartItems: CartItem[] = []
+export class ShoppingCartComponent implements OnInit {
+  cartItems$ = this.store.pipe(select(selectCartItemsWithProductData))
+  username?: string
 
   constructor(
-    private orderService: OrderService,
-    private authService: AuthService,
-    private router: Router
-  ) {
-    this.cartItems = orderService.getCartItems()
+    private store: Store<IAppState>
+  ) { }
+
+  ngOnInit(): void {
+    this.store.pipe(select(selectUser)).subscribe(user =>
+      this.username = user?.username)
   }
 
   removeProduct(id: number): void {
-    this.orderService.removeProduct(id)
-    this.cartItems = this.orderService.getCartItems()
+    this.store.dispatch(new RemoveCartItem(id))
   }
 
   checkout(): void {
-    const user = this.authService.getUser()
-    if (user == null)
-      return
-    this.orderService.createOrder(user.username).subscribe(result => {
-      alert(result)
-      this.router.navigate(['products'])
-    })
+    if (this.username === undefined) return
+    this.store.dispatch(new PlaceOrder())
+    alert('order submitted')
   }
 }
