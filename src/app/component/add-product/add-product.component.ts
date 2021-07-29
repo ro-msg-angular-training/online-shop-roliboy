@@ -11,7 +11,6 @@ import { IAppState } from 'src/app/store/state/app.state';
   styleUrls: ['./add-product.component.scss']
 })
 export class AddProductComponent {
-  productName: string = ''
   productForm = this.fb.group({
     name: ['', Validators.required],
     category: ['', Validators.required],
@@ -27,14 +26,7 @@ export class AddProductComponent {
   ) { }
 
   onSubmit(): void {
-    this.store.dispatch(new AddProduct({
-      id: 0,
-      name: this.productForm.value.name,
-      category: this.productForm.value.category,
-      image: this.productForm.value.image,
-      price: this.productForm.value.price,
-      description: this.productForm.value.description
-    }))
+    this.store.dispatch(new AddProduct(this.productForm.value))
     // TODO: only do this on success
     this.location.back()
   }

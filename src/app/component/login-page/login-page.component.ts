@@ -16,12 +16,12 @@ export class LoginPageComponent implements OnInit {
   authErrorMessage$ = this.store.pipe(select(selectAuthErrorMessage))
 
   loginForm = this.fb.group({
-    username: [''],
-    password: ['']
+    // username: [''],
+    // password: ['']
     // username: ['doej'],
     // password: ['password']
-    // username: ['blackj'],
-    // password: ['12345678']
+    username: ['blackj'],
+    password: ['12345678']
   })
 
   constructor(
@@ -38,10 +38,6 @@ export class LoginPageComponent implements OnInit {
   }
 
   onSubmit(): void {
-    const credentials = {
-      username: this.loginForm.value.username,
-      password: this.loginForm.value.password
-    }
-    this.store.dispatch(new AuthLogin(credentials))
+    this.store.dispatch(new AuthLogin(this.loginForm.value))
   }
 }

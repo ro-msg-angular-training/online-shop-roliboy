@@ -14,14 +14,14 @@ import { ProductService } from '../../service/product.service';
   styleUrls: ['./edit-product.component.scss']
 })
 export class EditProductComponent implements OnInit {
-  product$ = this.store.pipe(select(selectSelectedProduct))
-  productId: number = 0
+  product$ = this.store.pipe(select(selectSelectedProduct))  
 
   productForm = this.fb.group({
+    id: [0],
     name: ['', Validators.required],
     category: ['', Validators.required],
     image: ['', Validators.required],
-    price: ['', Validators.required],
+    price: [0, Validators.required],
     description: ['', Validators.required]
   })
 
@@ -37,24 +37,12 @@ export class EditProductComponent implements OnInit {
       this.store.dispatch(new GetProduct(params['id'])))
     this.product$.subscribe(product => {
       if (!product) return
-      this.productId = product.id
-      this.productForm.controls['name'].setValue(product.name)
-      this.productForm.controls['category'].setValue(product.category)
-      this.productForm.controls['image'].setValue(product.image)
-      this.productForm.controls['price'].setValue(product.price)
-      this.productForm.controls['description'].setValue(product.description)
+      this.productForm.patchValue(product)
     })
   }
 
   onSubmit(): void {
-    this.store.dispatch(new UpdateProduct({
-      id: this.productId,
-      name: this.productForm.value.name,
-      category: this.productForm.value.category,
-      image: this.productForm.value.image,
-      price: this.productForm.value.price,
-      description: this.productForm.value.description
-    }))
+    this.store.dispatch(new UpdateProduct(this.productForm.value))
     // TODO: on success
     this.location.back()
   }
