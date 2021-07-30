@@ -21,9 +21,18 @@ import { AppState } from 'src/app/store/state/app.state';
 export class AddProductComponent implements OnInit, OnDestroy {
   productAddedSubscription$ = new Subscription();
 
+  productForm = this.fb.group({
+    name: ['', Validators.required],
+    category: ['', Validators.required],
+    image: ['', Validators.required],
+    price: ['', Validators.required],
+    description: ['', Validators.required],
+  });
+
   constructor(
     private store: Store<AppState>,
     private location: Location,
+    private fb: FormBuilder,
     private actionsSubject$: ActionsSubject
   ) {}
 

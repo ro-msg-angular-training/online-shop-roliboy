@@ -1,5 +1,5 @@
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
-import { FormBuilder, Validators } from '@angular/forms';
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Product } from 'src/app/model/product.model';
 
 @Component({
@@ -8,8 +8,8 @@ import { Product } from 'src/app/model/product.model';
   styleUrls: ['./product-input-form.component.scss'],
 })
 export class ProductInputFormComponent implements OnInit {
-  @Input('product')
-  product?: Product | null
+  @Input('form')
+  productForm = new FormGroup({})
 
   @Output('onSubmit')
   submitEmitter = new EventEmitter<Product>();
@@ -17,24 +17,13 @@ export class ProductInputFormComponent implements OnInit {
   @Output('onCancel')
   cancelEmitter = new EventEmitter<void>();
 
-  productForm = this.fb.group({
-    id: [0],
-    name: ['', Validators.required],
-    category: ['', Validators.required],
-    image: ['', Validators.required],
-    price: ['', Validators.required],
-    description: ['', Validators.required],
-  });
-
-  constructor(private fb: FormBuilder) {}
+  constructor() {}
 
   ngOnInit(): void {
-    if (this.product)
-      this.productForm.patchValue(this.product)
   }
 
   onSubmit(): void {
-    this.submitEmitter.emit(this.productForm.value)
+    this.submitEmitter.emit(this.productForm?.value)
   }
 
   onCancel(): void {

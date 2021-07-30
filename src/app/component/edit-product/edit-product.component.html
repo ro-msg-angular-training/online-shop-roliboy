@@ -9,11 +9,17 @@
         </div>
       </div>
 
-      <app-product-input-form
-      [product]="product$ | async"
-      (onSubmit)="onFormSubmit($event)"
-      (onCancel)="onFormCancel()"
-    ></app-product-input-form>
+      <ng-container
+        *ngIf="productForm$ | async as productForm; else productNotLoadedTemplate"
+      >
+        <app-product-input-form
+          [form]="productForm"
+          (onSubmit)="onFormSubmit($event)"
+          (onCancel)="onFormCancel()"
+        ></app-product-input-form>
+      </ng-container>
+
+      <ng-template #productNotLoadedTemplate>Loading...</ng-template>
     </div>
   </div>
 </section>

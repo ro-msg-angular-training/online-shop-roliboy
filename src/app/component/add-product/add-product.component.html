@@ -10,6 +10,7 @@
       </div>
 
       <app-product-input-form
+        [form]="productForm"
         (onSubmit)="onFormSubmit($event)"
         (onCancel)="onFormCancel()"
       ></app-product-input-form>
