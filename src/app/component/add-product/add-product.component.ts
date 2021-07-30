@@ -36,7 +36,7 @@ export class AddProductComponent implements OnInit, OnDestroy {
             title: 'Product Added',
             content: 'new product was added successfully',
             created: new Date().getTime(),
-            timeout: 2500,
+            timeout: 1000,
             type: 'success',
           })
         );

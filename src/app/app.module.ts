@@ -24,6 +24,7 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { MatTableModule } from '@angular/material/table';
 import { NotificationEffects } from './store/effect/notification.effect';
 import { NotificationsComponent } from './component/notifications/notifications.component';
+import { PreloadSpinnerComponent } from './component/preload-spinner/preload-spinner.component';
 
 @NgModule({
   declarations: [
@@ -36,6 +37,7 @@ import { NotificationsComponent } from './component/notifications/notifications.
     LoginPageComponent,
     ProductInputFormComponent,
     NotificationsComponent,
+    PreloadSpinnerComponent,
   ],
   imports: [
     BrowserModule,

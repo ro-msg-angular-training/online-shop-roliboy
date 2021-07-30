@@ -56,7 +56,7 @@ export class ProductDetailsComponent implements OnInit, OnDestroy {
             title: 'Product Deleted',
             content: `product ${event.payload} was deleted successfully`,
             created: new Date().getTime(),
-            timeout: 2500,
+            timeout: 1000,
             type: 'success',
           })
         );
@@ -73,7 +73,7 @@ export class ProductDetailsComponent implements OnInit, OnDestroy {
             title: 'Product Added to Cart',
             content: `product ${event.payload} was added to your cart`,
             created: new Date().getTime(),
-            timeout: 2500,
+            timeout: 1000,
             type: 'success',
           })
         );

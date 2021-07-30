@@ -7,6 +7,7 @@ import {
   PlaceOrder,
   PlaceOrderSuccess,
   RemoveCartItem,
+  RemoveCartItemSuccess,
 } from 'src/app/store/action/cart.action';
 import { ShowNotification } from 'src/app/store/action/notification.action';
 import { selectCartItemsWithProductData } from 'src/app/store/reducer/cart.reducer';
@@ -19,8 +20,8 @@ import { AppState } from 'src/app/store/state/app.state';
 })
 export class ShoppingCartComponent implements OnInit, OnDestroy {
   cartItems$ = this.store.pipe(select(selectCartItemsWithProductData));
-  authenticatedUserSubscription$ = new Subscription();
   orderRegisteredSubscription$ = new Subscription();
+  cartItemRemovedSubscription$ = new Subscription();
 
   constructor(
     private store: Store<AppState>,
@@ -41,11 +42,25 @@ export class ShoppingCartComponent implements OnInit, OnDestroy {
           })
         );
       });
+
+    this.cartItemRemovedSubscription$ = this.actionsSubject$
+      .pipe(ofType<RemoveCartItemSuccess>(CartActionTypes.RemoveCartItemSuccess))
+      .subscribe(() => {
+        this.store.dispatch(
+          new ShowNotification({
+            title: 'Item Removed',
+            content: 'item was removed from the cart',
+            created: new Date().getTime(),
+            timeout: 1000,
+            type: 'success',
+          })
+        );
+      });
   }
 
   ngOnDestroy(): void {
-    this.authenticatedUserSubscription$.unsubscribe();
     this.orderRegisteredSubscription$.unsubscribe();
+    this.cartItemRemovedSubscription$.unsubscribe();
   }
 
   removeProduct(id: number): void {

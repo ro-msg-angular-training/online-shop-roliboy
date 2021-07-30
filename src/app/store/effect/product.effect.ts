@@ -1,9 +1,10 @@
 import { Injectable } from '@angular/core';
 import { Actions, createEffect, ofType } from '@ngrx/effects';
 import { Store } from '@ngrx/store';
-import { of } from 'rxjs';
-import { map, switchMap } from 'rxjs/operators';
+import { concat, of } from 'rxjs';
+import { concatMap, map, switchMap, withLatestFrom } from 'rxjs/operators';
 import { ProductService } from 'src/app/service/product.service';
+import { HidePreloader, ShowPreloader } from '../action/preload.action';
 import {
   AddProduct,
   AddProductSuccess,
@@ -17,6 +18,7 @@ import {
   UpdateProduct,
   UpdateProductSuccess,
 } from '../action/product.action';
+import { selectProductList } from '../reducer/product.reducer';
 import { AppState } from '../state/app.state';
 
 @Injectable()
@@ -30,8 +32,20 @@ export class ProductEffects {
   getProducts$ = createEffect(() => {
     return this._actions$.pipe(
       ofType<GetProducts>(ProductActionTypes.GetProducts),
-      switchMap(() => this._service.getProducts()),
-      switchMap((products) => of(new GetProductsSuccess(products)))
+      withLatestFrom(this._store.select(selectProductList)),
+      concatMap(([action, products]) => {
+        // don't make request to server if the products array is already populated
+        // there's probably a better way of doing this
+        if (products.length) {
+          return of(new GetProductsSuccess(products))
+        } else {
+          return concat(
+            of(new ShowPreloader()),
+            this._service.getProducts().pipe(map(products => new GetProductsSuccess(products))),
+            of(new HidePreloader())
+          )
+        }
+      })
     );
   });
 
@@ -39,8 +53,11 @@ export class ProductEffects {
     return this._actions$.pipe(
       ofType<GetProduct>(ProductActionTypes.GetProduct),
       map((action) => action.payload),
-      switchMap((id) => this._service.retrieveProduct(id)),
-      switchMap((product) => of(new GetProductSuccess(product)))
+      concatMap(id => concat(
+        of(new ShowPreloader()),
+        this._service.retrieveProduct(id).pipe(map(product => new GetProductSuccess(product))),
+        of(new HidePreloader())
+      ))
     );
   });
 

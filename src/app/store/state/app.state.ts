@@ -4,6 +4,7 @@ import {
   initialNotificationState,
   NotificationState,
 } from './notification.state';
+import { initialPreloadState, PreloadState } from './preload.state';
 import { initialProductState, ProductState } from './product.state';
 
 export interface AppState {
@@ -11,6 +12,7 @@ export interface AppState {
   product: ProductState;
   auth: AuthState;
   notification: NotificationState;
+  preload: PreloadState;
 }
 
 export const initialAppState: AppState = {
@@ -18,6 +20,7 @@ export const initialAppState: AppState = {
   product: initialProductState,
   auth: initialAuthState,
   notification: initialNotificationState,
+  preload: initialPreloadState,
 };
 
 export function getInitialState(): AppState {

@@ -1,0 +1,33 @@
+.preloader {
+  z-index: 1000;
+  position: fixed;
+  width: 100%;
+  height: 100%;
+}
+
+.preloader-show {
+    visibility: visible;
+    opacity: 1;
+    transition: visibility 0s linear, opacity 0s linear;
+}
+
+.preloader-hide {
+    visibility: hidden;
+    opacity: 0;
+    transition: visibility 1s ease-out, opacity 1s ease-out;
+}
+
+.loader-background {
+  z-index: -1;
+  background: white;
+  width: 100%;
+  height: 100%;
+}
+
+.loader {
+  position: absolute;
+  top: calc(50% - 3em);
+  left: calc(50% - 3em);
+  width: 6em;
+  height: 6em;
+}
