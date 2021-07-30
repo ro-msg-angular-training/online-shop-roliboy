@@ -20,6 +20,8 @@ import { environment } from 'src/environments/environment';
 import { ProductEffects } from './store/effect/product.effect';
 import { AuthEffects } from './store/effect/auth.effect';
 import { ProductInputFormComponent } from './component/product-input-form/product-input-form.component';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import { MatTableModule } from '@angular/material/table';
 
 @NgModule({
   declarations: [
@@ -40,6 +42,8 @@ import { ProductInputFormComponent } from './component/product-input-form/produc
     !environment.production ? StoreDevtoolsModule.instrument() : [],
     AppRoutingModule,
     ReactiveFormsModule,
+    BrowserAnimationsModule,
+    MatTableModule,
   ],
   providers: [],
   bootstrap: [AppComponent],

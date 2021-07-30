@@ -30,7 +30,41 @@
         </div>
       </div>
 
-      <table
+      <table mat-table [dataSource]="products$">
+        <ng-container matColumnDef="category">
+          <th mat-header-cell *matHeaderCellDef>Category</th>
+          <td mat-cell *matCellDef="let product">{{ product.category }}</td>
+        </ng-container>
+        <ng-container matColumnDef="name">
+          <th mat-header-cell *matHeaderCellDef>Product Name</th>
+          <td mat-cell *matCellDef="let product">{{ product.name }}</td>
+        </ng-container>
+        <ng-container matColumnDef="price">
+          <th mat-header-cell *matHeaderCellDef>Price</th>
+          <td mat-cell *matCellDef="let product">{{ product.price }}</td>
+        </ng-container>
+        <ng-container matColumnDef="arrow">
+          <th mat-header-cell *matHeaderCellDef></th>
+          <td mat-cell *matCellDef="let product" class="pt-2">
+            <span
+              class="icon has-text-info is-clickable"
+              (click)="showProductDetails(product.id)"
+            >
+              <i class="fas fa-angle-right is-size-2"></i>
+            </span>
+          </td>
+        </ng-container>
+        <tr
+          mat-header-row
+          *matHeaderRowDef="['category', 'name', 'price', 'arrow']"
+        ></tr>
+        <tr
+          mat-row
+          *matRowDef="let myRowData; columns: ['category', 'name', 'price', 'arrow']"
+        ></tr>
+      </table>
+
+      <!-- <table
         class="
           table table-collapse-last
           is-bordered is-striped is-hoverable is-fullwidth
@@ -59,7 +93,7 @@
             </td>
           </tr>
         </tbody>
-      </table>
+      </table> -->
     </div>
   </div>
 </section>
