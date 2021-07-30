@@ -1,12 +1,21 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnDestroy, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { ofType } from '@ngrx/effects';
 import { ActionsSubject, select, Store } from '@ngrx/store';
 import { Observable, Subscription } from 'rxjs';
 import { Product } from 'src/app/model/product.model';
-import { AddCartItem } from 'src/app/store/action/cart.action';
-import { DeleteProduct, DeleteProductSuccess, ProductActionTypes, GetProduct } from 'src/app/store/action/product.action';
-import { selectIsAdmin, selectIsCustomer } from 'src/app/store/reducer/auth.reducer';
+import { AddCartItem, AddCartItemSuccess, CartActionTypes, IncrementCartItemSuccess } from 'src/app/store/action/cart.action';
+import { ShowNotification } from 'src/app/store/action/notification.action';
+import {
+  DeleteProduct,
+  DeleteProductSuccess,
+  ProductActionTypes,
+  GetProduct,
+} from 'src/app/store/action/product.action';
+import {
+  selectIsAdmin,
+  selectIsCustomer,
+} from 'src/app/store/reducer/auth.reducer';
 import { selectSelectedProduct } from 'src/app/store/reducer/product.reducer';
 import { AppState } from 'src/app/store/state/app.state';
 
@@ -15,11 +24,12 @@ import { AppState } from 'src/app/store/state/app.state';
   templateUrl: './product-details.component.html',
   styleUrls: ['./product-details.component.scss'],
 })
-export class ProductDetailsComponent implements OnInit {
+export class ProductDetailsComponent implements OnInit, OnDestroy {
   product$ = this.store.pipe(select(selectSelectedProduct));
   isAdmin$ = this.store.pipe(select(selectIsAdmin));
   isCustomer$ = this.store.pipe(select(selectIsCustomer));
   productDeletedSubscription$ = new Subscription();
+  productAddedToCartSubscription$ = new Subscription();
 
   id: number = 0;
   isDeleteModalShown: boolean = false;
@@ -36,13 +46,42 @@ export class ProductDetailsComponent implements OnInit {
     this.store.dispatch(new GetProduct(this.id));
 
     this.productDeletedSubscription$ = this.actionsSubject$
-      .pipe(ofType<DeleteProductSuccess>(ProductActionTypes.DeleteProductSuccess))
-      .subscribe(() => {
+      .pipe(
+        ofType<DeleteProductSuccess>(ProductActionTypes.DeleteProductSuccess)
+      )
+      .subscribe((event) => {
         this.productDeletedSubscription$.unsubscribe();
-        // TODO: use html element instead alert to notify the user
-        alert('product deleted');
+        this.store.dispatch(
+          new ShowNotification({
+            title: 'Product Deleted',
+            content: `product ${event.payload} was deleted successfully`,
+            created: new Date().getTime(),
+            timeout: 2500,
+            type: 'success',
+          })
+        );
         this.router.navigate(['products']);
       });
+
+    this.productAddedToCartSubscription$ = this.actionsSubject$
+      .pipe(
+        ofType(CartActionTypes.AddCartItemSuccess, CartActionTypes.IncrementCartItemSuccess)
+      )
+      .subscribe((event: AddCartItemSuccess | IncrementCartItemSuccess) => {
+        this.store.dispatch(
+          new ShowNotification({
+            title: 'Product Added to Cart',
+            content: `product ${event.payload} was added to your cart`,
+            created: new Date().getTime(),
+            timeout: 2500,
+            type: 'success',
+          })
+        );
+      });
+  }
+
+  ngOnDestroy(): void {
+    this.productAddedToCartSubscription$.unsubscribe();
   }
 
   showDeleteModal(): void {
@@ -62,7 +101,6 @@ export class ProductDetailsComponent implements OnInit {
   }
 
   addToCart(): void {
-    // TODO: notify user
     this.store.dispatch(new AddCartItem(this.id));
   }
 }

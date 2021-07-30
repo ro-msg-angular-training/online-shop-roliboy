@@ -22,6 +22,8 @@ import { AuthEffects } from './store/effect/auth.effect';
 import { ProductInputFormComponent } from './component/product-input-form/product-input-form.component';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { MatTableModule } from '@angular/material/table';
+import { NotificationEffects } from './store/effect/notification.effect';
+import { NotificationsComponent } from './component/notifications/notifications.component';
 
 @NgModule({
   declarations: [
@@ -33,12 +35,13 @@ import { MatTableModule } from '@angular/material/table';
     AddProductComponent,
     LoginPageComponent,
     ProductInputFormComponent,
+    NotificationsComponent,
   ],
   imports: [
     BrowserModule,
     HttpClientModule,
     StoreModule.forRoot(appReducer),
-    EffectsModule.forRoot([ProductEffects, CartEffects, AuthEffects]),
+    EffectsModule.forRoot([ProductEffects, CartEffects, AuthEffects, NotificationEffects]),
     !environment.production ? StoreDevtoolsModule.instrument() : [],
     AppRoutingModule,
     ReactiveFormsModule,

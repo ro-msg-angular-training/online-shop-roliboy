@@ -5,6 +5,7 @@ import { ofType } from '@ngrx/effects';
 import { ActionsSubject, Store } from '@ngrx/store';
 import { Subscription } from 'rxjs';
 import { Product } from 'src/app/model/product.model';
+import { ShowNotification } from 'src/app/store/action/notification.action';
 import {
   AddProduct,
   AddProductSuccess,
@@ -30,8 +31,16 @@ export class AddProductComponent implements OnInit, OnDestroy {
     this.productAddedSubscription$ = this.actionsSubject$
       .pipe(ofType<AddProductSuccess>(ProductActionTypes.AddProductSuccess))
       .subscribe(() => {
-        // TODO: use html element instead alert to notify the user
-        alert('product created');
+        this.store.dispatch(
+          new ShowNotification({
+            title: 'Product Added',
+            content: 'new product was added successfully',
+            created: new Date().getTime(),
+            timeout: 2500,
+            type: 'success',
+          })
+        );
+        this.location.back();
       });
   }
 

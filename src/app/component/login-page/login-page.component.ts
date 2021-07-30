@@ -1,5 +1,5 @@
 import { Location } from '@angular/common';
-import { Component, OnDestroy, OnInit } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { FormBuilder } from '@angular/forms';
 import { ofType } from '@ngrx/effects';
 import { ActionsSubject, select, Store } from '@ngrx/store';
@@ -8,8 +8,13 @@ import {
   AuthLogin,
   AuthLoginSuccess,
   AuthActionTypes,
+  AuthLoginError,
 } from 'src/app/store/action/auth.action';
-import { selectAuthErrorMessage, selectHasAuthError } from 'src/app/store/reducer/auth.reducer';
+import { ShowNotification } from 'src/app/store/action/notification.action';
+import {
+  selectAuthErrorMessage,
+  selectHasAuthError,
+} from 'src/app/store/reducer/auth.reducer';
 import { AppState } from 'src/app/store/state/app.state';
 
 @Component({
@@ -20,15 +25,16 @@ import { AppState } from 'src/app/store/state/app.state';
 export class LoginPageComponent implements OnInit {
   hasAuthError$ = this.store.pipe(select(selectHasAuthError));
   authErrorMessage$ = this.store.pipe(select(selectAuthErrorMessage));
+
   userAuthenticatedSubscription$ = new Subscription();
 
   loginForm = this.fb.group({
     // username: [''],
     // password: ['']
-    // username: ['doej'],
-    // password: ['password'],
-    username: ['blackj'],
-    password: ['12345678'],
+    username: ['doej'],
+    password: ['password'],
+    // username: ['blackj'],
+    // password: ['12345678'],
   });
 
   constructor(
@@ -40,10 +46,25 @@ export class LoginPageComponent implements OnInit {
 
   ngOnInit(): void {
     this.userAuthenticatedSubscription$ = this.actionsSubject$
-      .pipe(ofType<AuthLoginSuccess>(AuthActionTypes.AuthLoginSuccess))
-      .subscribe(() => {
-        this.userAuthenticatedSubscription$.unsubscribe();
-        this.location.back();
+      .pipe(
+        ofType(AuthActionTypes.AuthLoginSuccess, AuthActionTypes.AuthLoginError)
+      )
+      .subscribe((action: AuthLoginSuccess | AuthLoginError) => {
+        if (action.type == AuthActionTypes.AuthLoginSuccess) {
+          this.userAuthenticatedSubscription$.unsubscribe();
+          this.location.back();
+        }
+        if (action.type == AuthActionTypes.AuthLoginError) {
+          this.store.dispatch(
+            new ShowNotification({
+              title: 'Login Failed',
+              content: 'invalid credentials',
+              created: new Date().getTime(),
+              timeout: 5000,
+              type: 'danger',
+            })
+          );
+        }
       });
   }
 

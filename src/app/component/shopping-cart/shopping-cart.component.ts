@@ -8,7 +8,7 @@ import {
   PlaceOrderSuccess,
   RemoveCartItem,
 } from 'src/app/store/action/cart.action';
-import { selectUser } from 'src/app/store/reducer/auth.reducer';
+import { ShowNotification } from 'src/app/store/action/notification.action';
 import { selectCartItemsWithProductData } from 'src/app/store/reducer/cart.reducer';
 import { AppState } from 'src/app/store/state/app.state';
 
@@ -22,24 +22,24 @@ export class ShoppingCartComponent implements OnInit, OnDestroy {
   authenticatedUserSubscription$ = new Subscription();
   orderRegisteredSubscription$ = new Subscription();
 
-  username?: string;
-
   constructor(
     private store: Store<AppState>,
     private actionsSubject$: ActionsSubject
   ) {}
 
   ngOnInit(): void {
-    // TODO: find a way to avoid doing this
-    this.authenticatedUserSubscription$ = this.store
-      .pipe(select(selectUser))
-      .subscribe((user) => (this.username = user?.username));
-
     this.orderRegisteredSubscription$ = this.actionsSubject$
       .pipe(ofType<PlaceOrderSuccess>(CartActionTypes.PlaceOrderSuccess))
       .subscribe(() => {
-        // TODO: use html element instead alert to notify the user
-        alert('order submitted');
+        this.store.dispatch(
+          new ShowNotification({
+            title: 'Order Placed',
+            content: 'order was submitted successfully',
+            created: new Date().getTime(),
+            timeout: 5000,
+            type: 'success',
+          })
+        );
       });
   }
 
@@ -53,7 +53,6 @@ export class ShoppingCartComponent implements OnInit, OnDestroy {
   }
 
   checkout(): void {
-    if (this.username === undefined) return;
     this.store.dispatch(new PlaceOrder());
   }
 }

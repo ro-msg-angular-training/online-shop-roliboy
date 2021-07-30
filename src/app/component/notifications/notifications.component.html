@@ -1,0 +1,14 @@
+<div class="notification-area">
+  <div
+    *ngFor="let notification of notifications$ | async"
+    class="notification"
+    [ngClass]="{
+      'is-success': notification.type == 'success',
+      'is-warning': notification.type == 'warning',
+      'is-danger': notification.type == 'danger'
+    }"
+  >
+    <button class="delete"></button>
+    <strong>{{ notification.title }}</strong>: {{ notification.content }}
+  </div>
+</div>

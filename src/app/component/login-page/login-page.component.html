@@ -44,9 +44,3 @@
     </div>
   </div>
 </section>
-
-<div class="notification-area" *ngIf="hasAuthError$ | async">
-  <div class="notification is-danger has-text-centered">
-    Login Failed: {{ authErrorMessage$ | async }}
-  </div>
-</div>

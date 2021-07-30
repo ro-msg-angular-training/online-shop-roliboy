@@ -22,7 +22,7 @@ export class ProductInputFormComponent implements OnInit {
     name: ['', Validators.required],
     category: ['', Validators.required],
     image: ['', Validators.required],
-    price: [0, Validators.required],
+    price: ['', Validators.required],
     description: ['', Validators.required],
   });
 
