@@ -19,6 +19,7 @@ import { StoreDevtoolsModule } from '@ngrx/store-devtools';
 import { environment } from 'src/environments/environment';
 import { ProductEffects } from './store/effect/product.effect';
 import { AuthEffects } from './store/effect/auth.effect';
+import { ProductInputFormComponent } from './component/product-input-form/product-input-form.component';
 
 @NgModule({
   declarations: [
@@ -29,6 +30,7 @@ import { AuthEffects } from './store/effect/auth.effect';
     EditProductComponent,
     AddProductComponent,
     LoginPageComponent,
+    ProductInputFormComponent,
   ],
   imports: [
     BrowserModule,

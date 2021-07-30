@@ -25,10 +25,10 @@ export class LoginPageComponent implements OnInit {
   loginForm = this.fb.group({
     // username: [''],
     // password: ['']
-    username: ['doej'],
-    password: ['password'],
-    // username: ['blackj'],
-    // password: ['12345678'],
+    // username: ['doej'],
+    // password: ['password'],
+    username: ['blackj'],
+    password: ['12345678'],
   });
 
   constructor(

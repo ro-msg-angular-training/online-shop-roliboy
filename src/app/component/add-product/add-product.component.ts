@@ -4,6 +4,7 @@ import { FormBuilder, Validators } from '@angular/forms';
 import { ofType } from '@ngrx/effects';
 import { ActionsSubject, Store } from '@ngrx/store';
 import { Subscription } from 'rxjs';
+import { Product } from 'src/app/model/product.model';
 import {
   AddProduct,
   AddProductSuccess,
@@ -19,18 +20,9 @@ import { AppState } from 'src/app/store/state/app.state';
 export class AddProductComponent implements OnInit, OnDestroy {
   productAddedSubscription$ = new Subscription();
 
-  productForm = this.fb.group({
-    name: ['', Validators.required],
-    category: ['', Validators.required],
-    image: ['', Validators.required],
-    price: ['', Validators.required],
-    description: ['', Validators.required],
-  });
-
   constructor(
     private store: Store<AppState>,
     private location: Location,
-    private fb: FormBuilder,
     private actionsSubject$: ActionsSubject
   ) {}
 
@@ -40,7 +32,6 @@ export class AddProductComponent implements OnInit, OnDestroy {
       .subscribe(() => {
         // TODO: use html element instead alert to notify the user
         alert('product created');
-        this.productForm.reset();
       });
   }
 
@@ -48,11 +39,11 @@ export class AddProductComponent implements OnInit, OnDestroy {
     this.productAddedSubscription$.unsubscribe();
   }
 
-  onSubmit(): void {
-    this.store.dispatch(new AddProduct(this.productForm.value));
+  onFormCancel(): void {
+    this.location.back();
   }
 
-  onCancel(): void {
-    this.location.back();
+  onFormSubmit(product: Product): void {
+    this.store.dispatch(new AddProduct(product));
   }
 }

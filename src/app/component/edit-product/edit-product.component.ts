@@ -5,6 +5,7 @@ import { ActivatedRoute } from '@angular/router';
 import { ofType } from '@ngrx/effects';
 import { ActionsSubject, select, Store } from '@ngrx/store';
 import { Subscription } from 'rxjs';
+import { Product } from 'src/app/model/product.model';
 import {
   ProductActionTypes,
   GetProduct,
@@ -19,25 +20,15 @@ import { AppState } from 'src/app/store/state/app.state';
   templateUrl: './edit-product.component.html',
   styleUrls: ['./edit-product.component.scss'],
 })
-export class EditProductComponent implements OnInit, OnDestroy {
+export class EditProductComponent implements OnInit {
   product$ = this.store.pipe(select(selectSelectedProduct));
   productUpdatedSubscription$ = new Subscription();
   productChangeSubscription$ = new Subscription();
-
-  productForm = this.fb.group({
-    id: [0],
-    name: ['', Validators.required],
-    category: ['', Validators.required],
-    image: ['', Validators.required],
-    price: [0, Validators.required],
-    description: ['', Validators.required],
-  });
 
   constructor(
     private store: Store<AppState>,
     private location: Location,
     private activatedRoute: ActivatedRoute,
-    private fb: FormBuilder,
     private actionsSubject$: ActionsSubject
   ) {}
 
@@ -45,29 +36,21 @@ export class EditProductComponent implements OnInit, OnDestroy {
     const id = parseInt(this.activatedRoute.snapshot.params['id']);
     this.store.dispatch(new GetProduct(id));
 
-    this.productChangeSubscription$ = this.product$.subscribe((product) => {
-      // TODO: get rid of this check somehow
-      if (!product) return;
-      this.productForm.patchValue(product);
-    });
-
     this.productUpdatedSubscription$ = this.actionsSubject$
-      .pipe(ofType<UpdateProductSuccess>(ProductActionTypes.UpdateProductSuccess))
+      .pipe(
+        ofType<UpdateProductSuccess>(ProductActionTypes.UpdateProductSuccess)
+      )
       .subscribe(() => {
         this.productUpdatedSubscription$.unsubscribe();
         this.location.back();
       });
   }
 
-  ngOnDestroy(): void {
-    this.productChangeSubscription$.unsubscribe();
+  onFormSubmit(product: Product): void {
+    this.store.dispatch(new UpdateProduct(product));
   }
 
-  onSubmit(): void {
-    this.store.dispatch(new UpdateProduct(this.productForm.value));
-  }
-
-  onCancel(): void {
+  onFormCancel(): void {
     this.location.back();
   }
 }
