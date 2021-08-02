@@ -1,8 +1,8 @@
 import { Injectable } from '@angular/core';
 import { Actions, createEffect, ofType } from '@ngrx/effects';
 import { Store } from '@ngrx/store';
-import { of } from 'rxjs';
-import { map, switchMap } from 'rxjs/operators';
+import { merge, of } from 'rxjs';
+import { delay, map, mergeMap, switchMap } from 'rxjs/operators';
 import { AuthService } from 'src/app/service/auth.service';
 import {
   ClearNotification,
@@ -14,20 +14,16 @@ import {
 
 @Injectable()
 export class NotificationEffects {
-  constructor(private _actions$: Actions, private _store: Store) {}
+  constructor(private _actions$: Actions) {}
 
   showNotification$ = createEffect(() =>
     this._actions$.pipe(
       ofType<ShowNotification>(NotificationActionTypes.ShowNotification),
       map((action) => action.payload),
-      switchMap((notification) => {
-        setTimeout(
-          () =>
-            this._store.dispatch(new ClearNotification(notification.created)),
-          notification.timeout
-        );
-        return of(new ShowNotificationSuccess(notification));
-      })
+      mergeMap((notification) => merge(
+        of(new ClearNotification(notification.created)).pipe(delay(notification.timeout)),
+        of(new ShowNotificationSuccess(notification))
+      ))
     )
   );
 
