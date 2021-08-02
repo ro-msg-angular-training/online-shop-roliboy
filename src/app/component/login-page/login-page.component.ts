@@ -1,16 +1,7 @@
-import { Location } from '@angular/common';
-import { Component, OnInit } from '@angular/core';
+import { Component } from '@angular/core';
 import { FormBuilder } from '@angular/forms';
-import { ofType } from '@ngrx/effects';
-import { ActionsSubject, select, Store } from '@ngrx/store';
-import { Subscription } from 'rxjs';
-import {
-  AuthLogin,
-  AuthLoginSuccess,
-  AuthActionTypes,
-  AuthLoginError,
-} from 'src/app/store/action/auth.action';
-import { ShowNotification } from 'src/app/store/action/notification.action';
+import { select, Store } from '@ngrx/store';
+import { AuthLogin } from 'src/app/store/action/auth.action';
 import {
   selectAuthErrorMessage,
   selectHasAuthError,
@@ -22,11 +13,9 @@ import { AppState } from 'src/app/store/state/app.state';
   templateUrl: './login-page.component.html',
   styleUrls: ['./login-page.component.scss'],
 })
-export class LoginPageComponent implements OnInit {
+export class LoginPageComponent {
   hasAuthError$ = this.store.pipe(select(selectHasAuthError));
   authErrorMessage$ = this.store.pipe(select(selectAuthErrorMessage));
-
-  userAuthenticatedSubscription$ = new Subscription();
 
   loginForm = this.fb.group({
     // username: [''],
@@ -37,36 +26,7 @@ export class LoginPageComponent implements OnInit {
     // password: ['12345678'],
   });
 
-  constructor(
-    private store: Store<AppState>,
-    private location: Location,
-    private fb: FormBuilder,
-    private actionsSubject$: ActionsSubject
-  ) {}
-
-  ngOnInit(): void {
-    this.userAuthenticatedSubscription$ = this.actionsSubject$
-      .pipe(
-        ofType(AuthActionTypes.AuthLoginSuccess, AuthActionTypes.AuthLoginError)
-      )
-      .subscribe((action: AuthLoginSuccess | AuthLoginError) => {
-        if (action.type == AuthActionTypes.AuthLoginSuccess) {
-          this.userAuthenticatedSubscription$.unsubscribe();
-          this.location.back();
-        }
-        if (action.type == AuthActionTypes.AuthLoginError) {
-          this.store.dispatch(
-            new ShowNotification({
-              title: 'Login Failed',
-              content: 'invalid credentials',
-              created: new Date().getTime(),
-              timeout: 5000,
-              type: 'danger',
-            })
-          );
-        }
-      });
-  }
+  constructor(private store: Store<AppState>, private fb: FormBuilder) {}
 
   onSubmit(): void {
     this.store.dispatch(new AuthLogin(this.loginForm.value));

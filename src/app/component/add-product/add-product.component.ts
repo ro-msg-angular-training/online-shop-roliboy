@@ -1,16 +1,9 @@
 import { Location } from '@angular/common';
-import { Component, OnDestroy, OnInit } from '@angular/core';
+import { Component } from '@angular/core';
 import { FormBuilder, Validators } from '@angular/forms';
-import { ofType } from '@ngrx/effects';
-import { ActionsSubject, Store } from '@ngrx/store';
-import { Subscription } from 'rxjs';
+import { Store } from '@ngrx/store';
 import { Product } from 'src/app/model/product.model';
-import { ShowNotification } from 'src/app/store/action/notification.action';
-import {
-  AddProduct,
-  AddProductSuccess,
-  ProductActionTypes,
-} from 'src/app/store/action/product.action';
+import { AddProduct } from 'src/app/store/action/product.action';
 import { AppState } from 'src/app/store/state/app.state';
 
 @Component({
@@ -18,9 +11,7 @@ import { AppState } from 'src/app/store/state/app.state';
   templateUrl: './add-product.component.html',
   styleUrls: ['./add-product.component.scss'],
 })
-export class AddProductComponent implements OnInit, OnDestroy {
-  productAddedSubscription$ = new Subscription();
-
+export class AddProductComponent {
   productForm = this.fb.group({
     name: ['', Validators.required],
     category: ['', Validators.required],
@@ -32,30 +23,8 @@ export class AddProductComponent implements OnInit, OnDestroy {
   constructor(
     private store: Store<AppState>,
     private location: Location,
-    private fb: FormBuilder,
-    private actionsSubject$: ActionsSubject
+    private fb: FormBuilder
   ) {}
-
-  ngOnInit(): void {
-    this.productAddedSubscription$ = this.actionsSubject$
-      .pipe(ofType<AddProductSuccess>(ProductActionTypes.AddProductSuccess))
-      .subscribe(() => {
-        this.store.dispatch(
-          new ShowNotification({
-            title: 'Product Added',
-            content: 'new product was added successfully',
-            created: new Date().getTime(),
-            timeout: 1000,
-            type: 'success',
-          })
-        );
-        this.location.back();
-      });
-  }
-
-  ngOnDestroy(): void {
-    this.productAddedSubscription$.unsubscribe();
-  }
 
   onFormCancel(): void {
     this.location.back();

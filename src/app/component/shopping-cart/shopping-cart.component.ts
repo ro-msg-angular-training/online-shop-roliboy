@@ -18,50 +18,12 @@ import { AppState } from 'src/app/store/state/app.state';
   templateUrl: './shopping-cart.component.html',
   styleUrls: ['./shopping-cart.component.scss'],
 })
-export class ShoppingCartComponent implements OnInit, OnDestroy {
+export class ShoppingCartComponent {
   cartItems$ = this.store.pipe(select(selectCartItemsWithProductData));
-  orderRegisteredSubscription$ = new Subscription();
-  cartItemRemovedSubscription$ = new Subscription();
 
   constructor(
-    private store: Store<AppState>,
-    private actionsSubject$: ActionsSubject
+    private store: Store<AppState>
   ) {}
-
-  ngOnInit(): void {
-    this.orderRegisteredSubscription$ = this.actionsSubject$
-      .pipe(ofType<PlaceOrderSuccess>(CartActionTypes.PlaceOrderSuccess))
-      .subscribe(() => {
-        this.store.dispatch(
-          new ShowNotification({
-            title: 'Order Placed',
-            content: 'order was submitted successfully',
-            created: new Date().getTime(),
-            timeout: 5000,
-            type: 'success',
-          })
-        );
-      });
-
-    this.cartItemRemovedSubscription$ = this.actionsSubject$
-      .pipe(ofType<RemoveCartItemSuccess>(CartActionTypes.RemoveCartItemSuccess))
-      .subscribe(() => {
-        this.store.dispatch(
-          new ShowNotification({
-            title: 'Item Removed',
-            content: 'item was removed from the cart',
-            created: new Date().getTime(),
-            timeout: 1000,
-            type: 'success',
-          })
-        );
-      });
-  }
-
-  ngOnDestroy(): void {
-    this.orderRegisteredSubscription$.unsubscribe();
-    this.cartItemRemovedSubscription$.unsubscribe();
-  }
 
   removeProduct(id: number): void {
     this.store.dispatch(new RemoveCartItem(id));

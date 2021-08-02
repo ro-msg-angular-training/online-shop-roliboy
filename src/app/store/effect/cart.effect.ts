@@ -18,6 +18,7 @@ import { of } from 'rxjs';
 import { OrderService } from 'src/app/service/order.service';
 import { selectCartItems } from '../reducer/cart.reducer';
 import { selectUser } from '../reducer/auth.reducer';
+import { ShowNotification } from '../action/notification.action';
 
 @Injectable()
 export class CartEffects {
@@ -37,7 +38,17 @@ export class CartEffects {
           return of(new IncrementCartItemSuccess(item))
         else
           return of(new AddCartItemSuccess(item))
-      })
+      }),
+      switchMap(action => [
+        new ShowNotification({
+          title: 'Product Added to Cart',
+          content: `product ${action.payload} was added to your cart`,
+          created: new Date().getTime(),
+          timeout: 2500,
+          type: 'success',
+        }),
+        action
+      ])
     );
   });
 
@@ -45,7 +56,16 @@ export class CartEffects {
     return this._actions$.pipe(
       ofType<RemoveCartItem>(CartActionTypes.RemoveCartItem),
       map((action) => action.payload),
-      switchMap((item) => of(new RemoveCartItemSuccess(item)))
+      switchMap((item) => [
+        new ShowNotification({
+          title: 'Item Removed',
+          content: 'item was removed from the cart',
+          created: new Date().getTime(),
+          timeout: 2500,
+          type: 'success',
+        }),
+        new RemoveCartItemSuccess(item)
+      ])
     );
   });
 
@@ -58,7 +78,16 @@ export class CartEffects {
       ),
       switchMap(([action, items, user]) =>
         this._service.createOrder(items, user?.username).pipe(
-          switchMap((message) => of(new PlaceOrderSuccess())),
+          switchMap((message) => [
+            new ShowNotification({
+              title: 'Order Placed',
+              content: 'order was submitted successfully',
+              created: new Date().getTime(),
+              timeout: 5000,
+              type: 'success',
+            }),
+            new PlaceOrderSuccess()
+          ]),
           catchError((error) => of(new PlaceOrderError()))
         )
       )

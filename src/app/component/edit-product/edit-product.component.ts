@@ -1,18 +1,11 @@
 import { Location } from '@angular/common';
-import { Component, OnDestroy, OnInit } from '@angular/core';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { Component, OnInit } from '@angular/core';
+import { FormBuilder, Validators } from '@angular/forms';
 import { ActivatedRoute } from '@angular/router';
-import { ofType } from '@ngrx/effects';
-import { ActionsSubject, select, Store } from '@ngrx/store';
-import { Observable, Subscription } from 'rxjs';
-import { filter, map } from 'rxjs/operators';
+import { select, Store } from '@ngrx/store';
+import { map } from 'rxjs/operators';
 import { Product } from 'src/app/model/product.model';
-import {
-  ProductActionTypes,
-  GetProduct,
-  UpdateProduct,
-  UpdateProductSuccess,
-} from 'src/app/store/action/product.action';
+import { GetProduct, UpdateProduct } from 'src/app/store/action/product.action';
 import { selectSelectedProduct } from 'src/app/store/reducer/product.reducer';
 import { AppState } from 'src/app/store/state/app.state';
 
@@ -23,8 +16,7 @@ import { AppState } from 'src/app/store/state/app.state';
 })
 export class EditProductComponent implements OnInit {
   product$ = this.store.pipe(select(selectSelectedProduct));
-  productUpdatedSubscription$ = new Subscription();
-  productChangeSubscription$ = new Subscription();
+
   productForm$ = this.product$.pipe(
     map((product) =>
       this.fb.group({
@@ -42,22 +34,12 @@ export class EditProductComponent implements OnInit {
     private store: Store<AppState>,
     private fb: FormBuilder,
     private location: Location,
-    private activatedRoute: ActivatedRoute,
-    private actionsSubject$: ActionsSubject
+    private activatedRoute: ActivatedRoute
   ) {}
 
   ngOnInit() {
     const id = parseInt(this.activatedRoute.snapshot.params['id']);
     this.store.dispatch(new GetProduct(id));
-
-    this.productUpdatedSubscription$ = this.actionsSubject$
-      .pipe(
-        ofType<UpdateProductSuccess>(ProductActionTypes.UpdateProductSuccess)
-      )
-      .subscribe(() => {
-        this.productUpdatedSubscription$.unsubscribe();
-        this.location.back();
-      });
   }
 
   onFormSubmit(product: Product): void {
